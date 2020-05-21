@@ -1,0 +1,54 @@
+@import 'base';
+@import 'navbar';
+@import 'footer';
+@import 'main-content';
+@import 'form';
+
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  // width: 100%;
+//   text-align: center;
+//   color: $palette-pink;
+//   // margin-top: 60px;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: $background-white;
+}
+
+// body {
+//   font-family: 
+// }
+
+h1, h2 {
+  font-weight: normal;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+// a {
+//   color: #42b983;
+// }
+
+
+
+
+
+
+
+
+
+
