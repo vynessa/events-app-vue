@@ -1,0 +1,31 @@
+/** FOOTER */
+@import 'base';
+
+.footer {
+  display: flex;
+  padding: 4rem 2rem;
+  justify-content: space-between;
+
+  @include respond-to(tablet-and-mobile) {
+    padding: 2rem 0.5rem;
+    flex-direction: column;
+    text-align: center
+  }
+}
+
+.footer-right {
+  // width: 18rem;
+  display: flex;
+  // flex-direction: row;
+  // justify-content: space-between;
+  // align-items: center;
+
+  @include respond-to(tablet-and-mobile){
+    display: unset;
+  }
+
+  a {
+    position: relative;
+    margin-left: 1rem;
+  }
+}
