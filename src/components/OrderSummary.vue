@@ -14,15 +14,15 @@
         <hr class="horizontal-line">
         <div class="order-subtotal">
           <p>Subtotal</p>
-          <p>N110,000</p>
+          <p>{{cartItemsSubTotal(cartItems)}}</p>
         </div>
         <div class="order-vat">
           <p>VAT</p>
-          <p>N1,000</p>
+          <p>{{vat}}</p>
         </div>
         <div class="order-total">
           <p>Total</p>
-          <p>N111,000</p>
+          <p>{{cartItemsTotal()}}</p>
         </div>
         <button class="order-payment-btn">Continue</button>
       </div>
@@ -36,9 +36,9 @@
       </form>
       <div>
         <p>Total payment</p>
-        <p>N110,000</p>
+        <p>{{cartItemsTotal()}}</p>
       </div>
-      <button class="order-payment-btn">Pay N110,000</button>
+      <button class="order-payment-btn">Pay {{cartItemsTotal()}}</button>
     
     </div>
   </div>
@@ -49,9 +49,29 @@ export default {
   data(){
     return {
       orderCompleted: false,
+      subtotal: 0,
+      vat: 0,
+      total: 0
     }
   },
-  props: ['cartItems']
+  props: ['cartItems'],
+  methods: {
+    cartItemsSubTotal(cartItems){
+      let sumOfCartItems = cartItems.reduce((acc, curr) => {
+        return acc + curr.amount
+      }, 0)
+      console.log("sumOfCartItems", sumOfCartItems)
+      // this.vat = sumOfCartItems * 0.01;
+      this.subtotal = sumOfCartItems;
+      return;
+    },
+    cartItemsTotal(){
+      
+
+      this.total = this.subtotal + this.vat;
+      return
+    }
+  }
 }
 </script>
 
