@@ -8,7 +8,7 @@
         <button id="navbar-icon">Open</button>
       </div>
       <div class="navbar-menu">
-        <router-link to="/no-tickets" class="navbar-menu__list-item navbar-link">
+        <router-link to="/no-ticket" class="navbar-menu__list-item navbar-link">
             I didn't get my tickets
         </router-link>
         <router-link to="/create-event">

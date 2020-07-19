@@ -1,101 +1,99 @@
 <template>
-  <div class="event-payment-wrapper">
-    <div class="event-payment-page">
-      <button class="close-payment-page">x Close</button>
-      <header>
-        <h4 class="event-detail__info-title">The Nathan cole experience</h4>
-        <h6 class="event-detail__info-date">8TH FEBRUARY 2019</h6>
-      </header>
+  <div>
+    <p v-if="loading">...Loading</p>
+    <div v-else class="event-payment-wrapper">
+      <cart 
+        @add-click="updateCart"
+        @remove-click="removefromCart"
+        :event="event"
+        :eventTicketTypes="eventTicketTypes"
+      >
+      </cart>
 
-      <div class="event-ticket-category">
-        <div class="event-ticket-regular">
-          <p>Regular</p>
-          <p>N5000</p>
-          <div>
-            <p>-</p>
-            <p>2</p>
-            <p>+</p>
-          </div>
-          <hr class="horizontal-line">
-        </div>
-
-        <div class="event-ticket-vip">
-          <p>VIP</p>
-          <p>N100,000</p>
-          <div>
-            <p>-</p>
-            <p>2</p>
-            <p>+</p>
-          </div>
-          <hr class="horizontal-line">
-        </div>
-
-        <div class="event-ticket-table">
-          <p>Table for 5</p>
-          <p>N1,000,000</p>
-          <div>
-            <p>-</p>
-            <p>0</p>
-            <p>+</p>
-          </div>
-          <hr class="horizontal-line">
-        </div>
-        <p>Ticket sale ends on 22nd November 2019</p>
-      </div>
-    </div>
-
-    <div v-if="!orderCompleted" class="order">
-      <div>
-        <h3>Order Summary</h3>
-        <hr class="horizontal-line">
-        <div class="order-details">
-          <p>2 - Regular</p>
-          <p>N10,000</p>
-        </div>
-        <div class="order-details">
-          <p>1 - VIP</p>
-          <p>N100,000</p>
-        </div>
-      </div>
-      <div>
-        <hr class="horizontal-line">
-        <div class="order-subtotal">
-          <p>Subtotal</p>
-          <p>N110,000</p>
-        </div>
-        <div class="order-vat">
-          <p>VAT</p>
-          <p>N1,000</p>
-        </div>
-        <div class="order-total">
-          <p>Total</p>
-          <p>N111,000</p>
-        </div>
-        <button class="order-payment-btn">Continue</button>
-      </div>
-    </div>
-
-    <div v-else class="registeration-form">
-      <h3>|-- Go back</h3>
-      <form action="">
-        <input type="text">
-        <input type="text">
-      </form>
-      <div>
-        <p>Total payment</p>
-        <p>N110,000</p>
-      </div>
-      <button class="order-payment-btn">Pay N110,000</button>
-    
+      <order-summary :cartItems="cartItems">
+      </order-summary>
     </div>
   </div>
 </template>
 
 <script>
+import Cart from "../components/Cart";
+import OrderSummary from "../components/OrderSummary";
+import EventsApi from "../services/api.js";
+
 export default {
   data () {
     return {
-      orderCompleted: false
+      loading:false,
+      event: {},
+      eventTicketTypes: [],
+      ticketsSelected: [],
+      cartItems: [],
+    }
+  },
+  created() {
+    this.getEventTicketTypes();
+  },
+  components: {
+    Cart,
+    OrderSummary
+  },
+  methods: {
+    getEventTicketTypes(eventId) {
+      this.loading = true;
+      this.event = JSON.parse(localStorage.getItem('selectedEvent'));
+      EventsApi.getEventTicketTypes(this.event.id).then((response) => {
+        this.eventTicketTypes = response.data
+        this.loading = false;
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+
+    },
+
+    updateCart(eventTicketType, ticketCount) {
+
+      
+      console.log("--------start-------")
+
+
+      if(this.cartItems.length === 0){
+        this.cartItems.push({
+          ticketCount,
+          ticketId: eventTicketType.id,
+          ticketTypeName: eventTicketType.name,
+          amount: eventTicketType.price
+        });
+      }
+
+      for(let key in this.cartItems){
+        if(this.cartItems[key].ticketTypeName === eventTicketType.name ) {
+          // console.log("ticket count", ticketCount)
+          console.log("cartItems id", this.cartItems[key].ticketId)
+          // // console.log("event ticket ID", eventTicketType)
+          // console.log("event ticket ID", eventTicketType.id)
+          this.cartItems[key].ticketCount = ticketCount
+          this.cartItems[key].amount = ticketCount * eventTicketType.price
+        }
+        else{
+          console.log("------NEW CART ITEM-------")
+          // console.log("cartItems id", this.cartItems[key].ticketId)
+          // // console.log("event ticket ID", eventTicketType)
+          // console.log("event ticket ID", eventTicketType.id)
+          this.cartItems.push({
+            ticketCount,
+            ticketId: eventTicketType.id,
+            ticketTypeName: eventTicketType.name,
+            amount: eventTicketType.price
+          })
+        }
+        
+      }
+
+    },
+    removefromCart(){
+
     }
   }
 }
