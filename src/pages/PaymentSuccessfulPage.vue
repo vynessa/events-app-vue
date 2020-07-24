@@ -1,13 +1,15 @@
 <template>
   <main-container>
-    <no-ticket>
-    </no-ticket>
+    <main>Your tickets have been confirmed and
+        sent to your email address at
+        <span class="email-link">ted@flutterwave.com</span>
+    </main>
+    <button class="btn-yellow">Buy more tickets</button>
   </main-container>
 </template>
 
 <script>
 import MainContainer from '../components/MainContainer'
-import NoTicket from '../components/NoTicketContainer';
 import Layout from '../pages/Layout';
 
 export default {
@@ -15,9 +17,7 @@ export default {
     this.$emit('update:layout', Layout);
   },
   components: {
-    MainContainer,
-    NoTicket
+    MainContainer
   }
 }
 </script>
-

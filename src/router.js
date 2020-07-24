@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import EventsListPage from "./pages/EventsListPage"
 import EventDetailPage from "./pages/EventDetailPage"
 import PaymentPage from './pages/PaymentPage'
+import PaymentSuccessfulPage from './pages/PaymentSuccessfulPage.vue'
 import NoTicketPage from "./pages/NoTicketPage"
 
 Vue.use(Router);
@@ -24,6 +25,11 @@ export default new Router({
       path: '/payment-page',
       name: 'paymentpage',
       component: PaymentPage
+    },
+    {
+      path: '/payment-successful',
+      name: 'paymentsuccessfulpage',
+      component: PaymentSuccessfulPage
     },
     {
       path: '/no-ticket',

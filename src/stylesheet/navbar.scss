@@ -1,6 +1,5 @@
 /** NAVBAR */
 .navbar {
-  height: 5rem;
   width: 100%;
   background-color: $background-white;
   position: fixed;
@@ -8,80 +7,93 @@
   border: none;
   margin: 0;
   padding: 1rem 0;
-  // border: 5px solid red
 }
 
 .navbar-inner {
   display: flex;
-  // align-items: center;
+  padding: 0 2rem;
   justify-content: space-between;
 
-  @include respond-to(tablet-mobile-desktop){
+  @include respond-to(tablet-and-mobile){
     padding: 0 2rem;
+    display: revert;
+    justify-content: revert;
   }
 }
 
 .navbar-header {
-
-
-  // @include respond-to(tablet-and-mobile) {
-  //   .fa-bars {
-    // float: right;
-  //     display: block;
-  //     position: absolute;
-  //     top: 0;
-  //     left: 0;
-  //   }
-  // }
+  display: flex;
+  align-items: center;
+  
+  @include respond-to(tablet-and-mobile) {
+    justify-content: space-between;
+  }
 }
 
 #navbar-logo {
-  height: 20px;
+  height: 25px;
 }
 
 .navbar-menu {
-  
-  // display: flex;
-  // justify-content: flex-end;
-  // align-items: center;
-  // justify-content: space-between;
+  display: flex;
+  align-items: center;
 
-  .navbar-menu__list-item {
+  
  
-    @include respond-to(tablet-and-mobile) {
-      display: none;
-    }
+  @include respond-to(tablet-and-mobile) {
+    display: none;
+  }
+}
+
+.navbar-menu__list-item {
+  margin-right: 1rem;
+
+  @include respond-to(tablet-and-mobile) {
+    margin: 0;
+  }
+}
+
+.active {
+  display: flex;
+  padding: 0 2rem;
+  height: 7rem;
+  justify-content: space-around;
+  align-items: unset;
+  background-color: $background-white;
+
+  flex-direction: column;
+
+  @include respond-to(tablet-and-mobile) {
+    display: none;
   }
 }
 
 .navbar-link {
-  @include navbar-links($text-transform: none)
+  @include links($text-transform: none)
 }
 
-.navbar-btn {
-  @include buttons($bg-color: $brand-yellow, $text-color: $white)
-}
-
-#navbar-icon {
+.navbar-icon {
   display: none;
   
   @include respond-to(tablet-and-mobile){
-    display: block;
+    display: flex;
   }
 
 }
 
-// @include respond-to(tablet-and-mobile) {
-//   .navbar__menu {
-//     display: none;
-//   }
+.navbar-btn  {
+  @include buttons($bg-color: $brand-yellow, $text-color: $white);
 
-//   .navbar__header.a {
-//     display: block;
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//   }
-// }
+  @include hover{
+    background-color: $brand-hover-yellow;
+  };
 
+  @include respond-to(tablet-and-mobile){
+    width: unset
+  }
 
+  @include respond-to(smobile){
+    font-size: 11px;
+    padding: 10px 10px;
+  }
+}

@@ -1,0 +1,7 @@
+.email-link {
+  @include links(
+    $text-color: #2D9CDB,
+    $text-transform: none,
+    $letter-spacing: 0
+  )
+}

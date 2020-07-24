@@ -1,11 +1,9 @@
 <template>
    <footer class="footer inner-container">
-      <div class="footer-left">
-        <p id="copyright">Copyright 2019. Flutterwave Inc</p>
-      </div>
+      <p id="copyright" class="footer-left footer-text">Copyright 2019. Flutterwave Inc</p>
       <div class="footer-right">
-        <a class="navbar-link" href="#">Terms & Conditions</a>
-        <a class="navbar-link" href="#">Privacy Policy</a>
+        <a class="navbar-link footer-text" href="#">Terms & Conditions</a>
+        <a class="navbar-link footer-text" href="#">Privacy Policy</a>
       </div>
     </footer>
 </template>

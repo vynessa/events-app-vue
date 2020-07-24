@@ -1,0 +1,16 @@
+/** CARD */
+
+.card {
+  background-color: $white;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.no-ticket-card {
+  width: 32%;
+  // height: 12rem;
+
+  @include respond-to(tablet-and-mobile){
+    width: unset;
+  }
+}
