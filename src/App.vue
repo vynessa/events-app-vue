@@ -1,22 +1,24 @@
 <template>
   <div id="app">
-    <navbar></navbar>
-    <router-view/>
-    <footer-div></footer-div>
+    <component :is="layout">
+      <router-view :layout.sync="layout"/>
+    </component>
   </div>
+
+  
 </template>
 
 <script>
 import '../src/stylesheet/main.scss';
-import Navbar from './components/Navbar';
-import FooterDiv from './components/Footer';
+import Layout from './pages/Layout';
 
 export default {
   name: 'app',
-  components: {
-    Navbar,
-    FooterDiv
-  }
+  data() {
+    return {
+      layout: 'div',
+    };
+  },
 }
 </script>
 

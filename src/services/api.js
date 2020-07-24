@@ -57,7 +57,24 @@ class EventsApi {
         return error;
       });
   }
-  
+
+  /**
+   * @description Posts registration Info
+   * @method
+   * @param {object}  
+   * @returns {array} 
+   */
+  static postRegistrationDetails(data) {
+    // const apiUrl = `${process.env.EVENTS_APP_API_BASE_URL}${process.env.EVENTS_APP_API_VERSION}`;
+    const apiUrl = `https://eventsflw.herokuapp.com/v1/events/1/register`
+    return axios.post(apiUrl, data)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        return error;
+      });
+  }
 }
 
 export default EventsApi;

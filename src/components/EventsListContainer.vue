@@ -3,8 +3,8 @@
     <h1 class="header-text">
       {{text}}
     </h1>
-    <div class="events-list" > 
-      <p v-if="loading">........Loading</p>
+    <loader v-if="loading" :loading="loading"></loader>
+    <div v-else class="events-list" > 
       <div class="events-list__item" v-for="event in eventsDataList.events" :key="event.id">
         <img v-on:click="displayEvent(event.id)" class="events-list__img" :src="event.image || `../assets/anthony-unsplash.jpg`">
         <h6 class="events-list__date">{{displayParsedTime(event.start_time)}}</h6>
@@ -17,6 +17,7 @@
 
 <script>
 import EventsApi from "../services/api"
+import Loader from '../components/loaders/loader';
 import { parseTime } from '../services/utils';
 
 export default {
@@ -26,6 +27,9 @@ export default {
       loading: false,
       eventsDataList: [],
     }
+  },
+  components: {
+    Loader
   },
   created() {
     this.getEvents;
@@ -40,13 +44,6 @@ export default {
     },
   },
   methods: {
-    // getEvents() {
-    //   this.loading = true;
-    //   EventsApi.getEvents().then((response) => {
-    //     this.eventsDataList = response.data
-    //     this.loading = false;
-    //   });
-    // },
     displayEvent(id) {
       this.$router.push(`/events/${id}`)
     },

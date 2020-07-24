@@ -3,7 +3,7 @@
 
 .footer {
   display: flex;
-  padding: 4rem 2rem;
+  padding: 4rem 7rem;
   justify-content: space-between;
 
   @include respond-to(tablet-and-mobile) {
@@ -13,12 +13,14 @@
   }
 }
 
+.footer-left{
+  @include respond-to(tablet-and-mobile){
+    margin-bottom: 0.5rem;
+  }
+}
+
 .footer-right {
-  // width: 18rem;
   display: flex;
-  // flex-direction: row;
-  // justify-content: space-between;
-  // align-items: center;
 
   @include respond-to(tablet-and-mobile){
     display: unset;
@@ -28,4 +30,8 @@
     position: relative;
     margin-left: 1rem;
   }
+}
+
+.footer-text {
+  color: $black-04;
 }
