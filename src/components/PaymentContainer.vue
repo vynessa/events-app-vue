@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p v-if="loading">...Loading</p>
+    <loader v-if="loading" :loading="loading"></loader>
     <div v-else class="event-payment-wrapper">
       <cart 
         @add-click="updateCart"
@@ -20,6 +20,7 @@
 import Cart from "../components/Cart";
 import OrderSummary from "../components/OrderSummary";
 import EventsApi from "../services/api.js";
+import Loader from '../components/loaders/loader';
 
 export default {
   data () {
@@ -36,7 +37,8 @@ export default {
   },
   components: {
     Cart,
-    OrderSummary
+    OrderSummary,
+    Loader
   },
   methods: {
     getEventTicketTypes(eventId) {

@@ -1,6 +1,8 @@
 @mixin respond-to($media) {
   @if $media == handhelds {
     @media only screen and (min-width: $break-point-smobile) and (max-width: $break-point-mobile) { @content; }
+  } @else if $media == smobile {
+    @media only screen and (max-width: $break-point-smobile) { @content; }
   } @else if $media == tablets {
     @media only screen and (min-width: $break-point-mobile + 1) and (max-width: $break-point-large-tablet) { @content; }
   } @else if $media == tablet-and-mobile {
@@ -16,7 +18,15 @@
   }
 }
 
-@mixin buttons($bg-color, $text-color, $padding: 10px 20px, $font-size: 12px, $border: none) {
+@mixin buttons(
+  $bg-color, 
+  $text-color, 
+  $padding: 10px 20px, 
+  $font-size: 12px, 
+  $border: none,
+  $border-radius: 4px,
+  $width: 100%) 
+{
   background-color: $bg-color;
   color: $text-color;
   padding: $padding;
@@ -24,19 +34,49 @@
   font-weight: 500;
   letter-spacing: 0.508366px;
   border: $border;
-  border-radius: 4px;
+  border-radius: $border-radius;
   text-transform: uppercase;
   text-decoration: none;
   display: inline-block;
+  width: $width;
 }
 
-@mixin navbar-links($text-color: $black-01, $letter-spacing: 0.508366px, $text-transform: uppercase) {
+@mixin hover {
+  &:not([disabled]):hover {
+    @content;
+  }
+}
+
+@mixin links($text-color: $black-01, $letter-spacing: 0.508366px, $text-transform: uppercase) {
   color: $text-color;
   letter-spacing: $letter-spacing;
   font-weight: 500;
   text-transform: $text-transform;
   text-decoration: none;
   cursor: pointer;
+}
+
+@mixin header-texts($text-color: $black-text, $line-height: 22px, $font-size: 1rem, $font-weight: 500, $letter-spacing: 0.508366px, $text-transform: uppercase) {
+  color: $text-color;
+  letter-spacing: $letter-spacing;
+  font-size: $font-size;
+  font-weight: $font-weight;
+  text-transform: $text-transform;
+  text-decoration: none;
+  line-height: $line-height;
+}
+
+@mixin paragraph($text-color: $black-01, $line-height: 22px, $font-size: 1rem, $font-weight: 500, $letter-spacing: 0.508366px, $text-transform: uppercase) {
+  @include header-texts(
+    $text-color, $line-height, 
+    $font-size, $font-weight, 
+    $letter-spacing, $text-transform
+  )
+}
+
+@mixin horizontal-line($line-border: 1px solid #CCB7B1, $width: 100% ) {
+  border: $line-border;
+  width: $width;
 }
 
 @mixin logo($text-color: $white, $font-family: $font-family-logo, $font-size: 40px, $margin: 0) {
@@ -49,11 +89,6 @@
   @include respond-to(handhelds) {
     font-size: 30px;
   }
-}
-
-@mixin user-auth-text() {
-  color: $palette-pink;
-  text-transform: uppercase;
 }
 
 @mixin form-label($text-color: $white, $font-weight: 100, $text-transform: uppercase, $letter-spacing: 4px) {

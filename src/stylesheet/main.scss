@@ -1,18 +1,24 @@
+// @import "bourbon";
+@import '../../node_modules/@braid/vue-formulate/themes/snow/snow.scss';
 @import 'base';
 @import 'navbar';
-@import 'footer';
 @import 'main-content';
+@import 'checkmark';
+@import 'modals';
+@import 'cards';
+@import 'events';
+@import 'event-detail';
+@import 'payment-page';
 @import 'form';
+@import 'no-ticket';
+@import 'loader';
+@import 'footer';
 
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // width: 100%;
-//   text-align: center;
-//   color: $palette-pink;
-//   // margin-top: 60px;
 }
 
 html,
@@ -39,9 +45,14 @@ li {
   margin: 0 10px;
 }
 
-// a {
-//   color: #42b983;
-// }
+.btn-yellow {
+  @include buttons($bg-color: $brand-yellow, $text-color: $white);
+
+  @include hover{
+    background-color: $brand-hover-yellow;
+  };
+}
+
 
 
 

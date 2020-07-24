@@ -5,9 +5,14 @@
         <router-link to="/">
           <img id="navbar-logo" src='../assets/flutterwave-logo.png'>
         </router-link>
-        <button id="navbar-icon">Open</button>
+        <span class="navbar-icon" v-on:click="toggleClass()">
+          <font-awesome-icon 
+            :icon="['fas', 'bars']" 
+            size="1x" 
+            :style="{ color: '#F5A623' }" />
+        </span>
       </div>
-      <div class="navbar-menu">
+      <div class="navbar-menu" :class="{active: active}">
         <router-link to="/no-ticket" class="navbar-menu__list-item navbar-link">
             I didn't get my tickets
         </router-link>
@@ -21,7 +26,22 @@
 
 <script>
 export default {
- 
+  data() {
+    return {
+      active: false,
+      addClass: ''
+    }
+  },
+  computed: {
+    showNavMenu(){
+      return this.active ? 'active' : ''
+    }
+  },
+  methods: {
+    toggleClass() {
+      this.active = !this.active
+    },
+  }
 }
 </script>
 
