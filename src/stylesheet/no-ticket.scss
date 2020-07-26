@@ -1,3 +1,16 @@
+.no-ticket-container,
+.no-ticket-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-ticket-container {
+  p {
+    text-align: center;
+  }
+}
+
 .email-link {
   @include links(
     $text-color: #2D9CDB,

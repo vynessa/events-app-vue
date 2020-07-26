@@ -4,7 +4,7 @@
       <p class="event-ticket-type__name">{{eventTicketType.name}}</p>
       <p class="event-ticket-type__price">{{eventTicketType.price}}</p>
       <div class="event-cart__btn">
-        <span class="event-cart__btn__remove" @click="removeFromCart(eventTicketType, --ticketCount)">
+        <span class="event-cart__btn__remove" v-bind:disabled="setDisabled()" @click="removeFromCart(eventTicketType, --ticketCount)">
           <font-awesome-icon 
           :icon="['fas', 'minus-circle']" 
           size="xs"
@@ -37,6 +37,11 @@ export default {
     eventTicketType: Object,
     addToCart: Function,
     removeFromCart: Function
+  },
+  methods: {
+    setDisabled(){
+      this.ticketCount === 0 ? true : false;
+    }
   }
 
 }
