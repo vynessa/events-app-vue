@@ -3,6 +3,7 @@
   */
 .event-payment-wrapper {
   display: flex;
+  height: 100vh;
 
   @include respond-to(tablet-and-mobile){
     flex-direction: column;
