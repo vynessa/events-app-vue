@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueFormulate from '@braid/vue-formulate'
+import Notifications from 'vue-notification'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faTimes, faBars, 
          faMinusCircle, faPlusCircle,
@@ -22,6 +23,7 @@ Vue.use(VueFormulate, {
     input: 'form-input',
   }
 });
+Vue.use(Notifications);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
