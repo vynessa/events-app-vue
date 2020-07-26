@@ -4,21 +4,26 @@
       {{text}}
     </h1>
     <loader v-if="loading" :loading="loading"></loader>
-    <div v-else class="events-list"> 
-      <div class="events-list__item" v-for="event in eventsDataList" :key="event.id">
-        <img v-on:click="displayEvent(event.id)" class="events-list__img" :src="event.image || `../assets/anthony-unsplash.jpg`">
-        <h6 class="events-list__date">{{displayParsedTime(event.start_time)}}</h6>
-        <h4 class="events-list__title">{{event.name}}</h4>
-        <p class="events-list__price">{{getEventType(event.is_free, event.is_sold_out)}}</p>
-      </div>
+    <div v-else class="events-list-wrapper">
+      <div class="events-list"> 
+        <div class="events-list__item" v-for="event in eventsDataList" :key="event.id">
+          <img 
+            class="events-list__img" 
+            v-on:click="displayEvent(event.id)"
+            :src="event.image">
+          <h6 class="events-list__date">{{displayParsedTime(event.start_time)}}</h6>
+          <h4 class="events-list__title">{{event.name}}</h4>
+          <p class="events-list__price">{{getEventType(event.is_free, event.is_sold_out)}}</p>
+        </div>
 
-    </div>
+      </div>
       <div class="pagination-wrapper">
         <loader v-if="loadMore" :loading="loadMore"></loader>
         <p v-if="noNewerEvents">You are up to date!</p>
         <button v-else class="btn-yellow pagination-btn" v-on:click="loadMoreEvents()">Load More Events</button>
       </div>
-  </div>  
+    </div>
+  </div>
 </template>
 
 <script>
@@ -33,8 +38,9 @@ export default {
       loading: false,
       eventsDataList: [],
       currentPageNumber: 1,
-      limit: 10,
+      limit: 6,
       noNewerEvents: false,
+      // eventImg: require.context('../assets/anthony-unsplash'),
       loadMore: false
     }
   },
@@ -45,7 +51,7 @@ export default {
     this.getEvents;
   },
   computed: {
-     getEvents() {
+    getEvents() {
       const queryData = {
         page: this.currentPageNumber,
         limit: this.limit
@@ -55,9 +61,13 @@ export default {
         this.eventsDataList = response.data.events
         this.loading = false;
       });
-    },
+    }
   },
   methods: {
+    // getImgUrl() {
+    //   var image = require.context('../assets/', false, /\.jpeg$/)
+    //   return image(this.eventImg + ".jpeg")
+    // },
     displayEvent(id) {
       this.$router.push(`/events/${id}`)
     },

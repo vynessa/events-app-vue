@@ -12,9 +12,10 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/events',
+      path: '/',
       name: 'events',
-      component: EventsListPage
+      component: EventsListPage,
+      alias: '/events' 
     },
     {
       path: '/events/:id',

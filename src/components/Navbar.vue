@@ -16,7 +16,7 @@
         <router-link to="/no-ticket" class="navbar-menu__list-item navbar-link">
             I didn't get my tickets
         </router-link>
-        <router-link to="/create-event">
+        <router-link to="/">
           <button class="navbar-menu__list-item navbar-btn">Create your own event</button>
         </router-link>
       </div>
