@@ -4,7 +4,6 @@
   display: flex;
   position: fixed;
   z-index: 999;
-  padding-top: 100px;
   left: 0;
   top: 0;
   width: 100%;
@@ -23,15 +22,23 @@
 }
 
 .modal-content {
-  background-color: $background-white;
+  background-color: $white;
   margin: auto;
   padding: 2rem;
   border: 1px solid $black-02;
-  width: 35%;
+  width: 25%;
   border-radius: 10px;
 
   @include respond-to(handhelds){
     width: 100%;
+  }
+
+  @include respond-to(medium-and-wide-screens ){
+    width: 35%;
+  }
+
+  @include respond-to(tablets){
+    width: unset;
   }
 }
 
