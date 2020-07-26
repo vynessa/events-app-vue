@@ -10,7 +10,13 @@
       >
       </cart>
 
-      <order-summary :cartItems="cartItems">
+      <order-summary 
+        :event="event"
+        :cartItems="cartItems"
+        :subtotal="subtotal"
+        :vat="vat"
+        :total="total"
+      >
       </order-summary>
     </div>
   </div>
@@ -30,6 +36,9 @@ export default {
       eventTicketTypes: [],
       ticketsSelected: [],
       cartItems: [],
+      subtotal: 0,
+      vat: 0,
+      total: 0
     }
   },
   created() {
@@ -41,6 +50,27 @@ export default {
     Loader
   },
   methods: {
+    addNewCartItem(eventTicketType, cartItems) {
+      cartItems.push({
+        ticketCount: 1,
+        ticketId: eventTicketType.id,
+        ticketTypeName: eventTicketType.name,
+        amount: eventTicketType.price
+      });
+    },
+    cartItemsSubTotal(){
+      let sumOfCartItems = this.cartItems.reduce((acc, curr) => {
+        return acc + curr.amount
+      }, 0)
+      this.vat = sumOfCartItems * 0.01;
+      this.subtotal = sumOfCartItems;
+      return;
+    },
+
+    cartItemsTotal(){
+      this.total = this.subtotal + this.vat;
+      return
+    },
     getEventTicketTypes(eventId) {
       this.loading = true;
       this.event = JSON.parse(localStorage.getItem('selectedEvent'));
@@ -54,48 +84,53 @@ export default {
 
     },
 
-    updateCart(eventTicketType, ticketCount) {
-
-      
-      console.log("--------start-------")
-
-
+    updateCart(eventTicketType) {
       if(this.cartItems.length === 0){
-        this.cartItems.push({
-          ticketCount,
-          ticketId: eventTicketType.id,
-          ticketTypeName: eventTicketType.name,
-          amount: eventTicketType.price
-        });
+        this.addNewCartItem(eventTicketType, this.cartItems);
       }
+      else {  
+        const findCartItem = this.cartItems.find((cartItem) => {
+          return cartItem.ticketId === eventTicketType.id
+        });
 
-      for(let key in this.cartItems){
-        if(this.cartItems[key].ticketTypeName === eventTicketType.name ) {
-          // console.log("ticket count", ticketCount)
-          console.log("cartItems id", this.cartItems[key].ticketId)
-          // // console.log("event ticket ID", eventTicketType)
-          // console.log("event ticket ID", eventTicketType.id)
-          this.cartItems[key].ticketCount = ticketCount
-          this.cartItems[key].amount = ticketCount * eventTicketType.price
+        if(findCartItem){
+          this.cartItems.forEach((cartItem, index) => {
+            if (cartItem.ticketId === eventTicketType.id) {
+              this.cartItems[index].ticketCount++;
+              this.cartItems[index].amount = this.cartItems[index].ticketCount * eventTicketType.price;
+            }
+          });
         }
         else{
-          console.log("------NEW CART ITEM-------")
-          // console.log("cartItems id", this.cartItems[key].ticketId)
-          // // console.log("event ticket ID", eventTicketType)
-          // console.log("event ticket ID", eventTicketType.id)
-          this.cartItems.push({
-            ticketCount,
-            ticketId: eventTicketType.id,
-            ticketTypeName: eventTicketType.name,
-            amount: eventTicketType.price
-          })
+          this.addNewCartItem(eventTicketType, this.cartItems);
         }
-        
       }
-
+      this.cartItemsSubTotal();
+      this.cartItemsTotal();
     },
-    removefromCart(){
+    removefromCart(eventTicketType){
+      const findCartItem = this.cartItems.find((cartItem) => {
+        return cartItem.ticketId === eventTicketType.id
+      });
 
+      if(findCartItem){
+        if(findCartItem.ticketCount > 1){
+          this.cartItems.forEach((cartItem, index) => {
+            if (cartItem.ticketId === eventTicketType.id) {
+              this.cartItems[index].ticketCount--;
+              this.cartItems[index].amount = this.cartItems[index].ticketCount * eventTicketType.price;
+            }
+          });
+        }
+        else {
+          this.cartItems.forEach((cartItem, index) => {
+            this.cartItems.splice(index, 1) ;
+          });
+          
+        }
+      }
+      this.cartItemsSubTotal;
+      this.cartItemsTotal;
     }
   }
 }

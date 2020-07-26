@@ -76,14 +76,14 @@
 </template>
 
 <script>
+import EventsApi from '../services/api.js';
+
 export default {
   data(){
     return {
       orderCompleted: false,
-      subtotal: 0,
-      vat: 0,
-      total: 0,
       values: {},
+      createdOrder: [],
       schema: [
         {
           label: "Full Name",
@@ -106,20 +106,33 @@ export default {
       ]
     }
   },
-  props: ['cartItems'],
+  props: ['cartItems', 'subtotal', 'vat', 'total', 'event'],
+  computed: {
+    onCreateOrder() {
+      const data = {
+        event_id: event.id,
+        email: this.values.email,
+        phone: this.values.phone,
+        name: this.values.name,
+        base_amount: this.total,
+        value_added_tax: this.vat,
+        tickets_bought: JSON.stringify(this.ticketsBought())
+      };
+
+      EventsApi.createOrder(data).then((response) => {
+        this.createdOrder = response.data
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    }
+  },
   methods: {
-    cartItemsSubTotal(cartItems){
-      let sumOfCartItems = cartItems.reduce((acc, curr) => {
-        return acc + curr.amount
-      }, 0)
-      console.log("sumOfCartItems", sumOfCartItems)
-      // this.vat = sumOfCartItems * 0.01;
-      this.subtotal = sumOfCartItems;
-      return;
-    },
-    cartItemsTotal(){
-      this.total = this.subtotal + this.vat;
-      return
+    ticketsBought() {
+      return this.cartItems.reduce((acc, curr) => {
+        acc[curr.ticketId] = curr.ticketCount
+        return acc;
+      }, {})
     },
     generateIdRef(){
       return `EVFL_${Math.random().toString(36).substr(2, 9)}`;
@@ -128,10 +141,12 @@ export default {
       this.orderCompleted = !this.orderCompleted
     },
     makePayment() {
+      this.onCreateOrder;
+
       FlutterwaveCheckout({
         public_key: "FLWPUBK-30e949898e40a17e49e4bc880b5176b5-X",
         tx_ref: this.generateIdRef(),
-        amount: 54600,
+        amount: this.total,
         currency: "NGN",
         payment_options: "card",
         redirect_url: // specified redirect URL
@@ -142,9 +157,9 @@ export default {
         //   consumer_mac: "92a3-912ba-1192a",
         // },
         customer: {
-          email: "bepoka7430@tmauv.com",
-          phone_number: "0810232324304",
-          name: "Vy Lol",
+          email: this.values.email,
+          phone_number: this.values.phone,
+          name: this.values.name,
         },
         // callback: function (data) {
         //   console.log(data);
