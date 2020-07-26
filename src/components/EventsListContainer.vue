@@ -4,14 +4,20 @@
       {{text}}
     </h1>
     <loader v-if="loading" :loading="loading"></loader>
-    <div v-else class="events-list" > 
-      <div class="events-list__item" v-for="event in eventsDataList.events" :key="event.id">
+    <div v-else class="events-list"> 
+      <div class="events-list__item" v-for="event in eventsDataList" :key="event.id">
         <img v-on:click="displayEvent(event.id)" class="events-list__img" :src="event.image || `../assets/anthony-unsplash.jpg`">
         <h6 class="events-list__date">{{displayParsedTime(event.start_time)}}</h6>
         <h4 class="events-list__title">{{event.name}}</h4>
         <p class="events-list__price">{{getEventType(event.is_free, event.is_sold_out)}}</p>
       </div>
+
     </div>
+      <div class="pagination-wrapper">
+        <loader v-if="loadMore" :loading="loadMore"></loader>
+        <p v-if="noNewerEvents">You are up to date!</p>
+        <button v-else class="btn-yellow pagination-btn" v-on:click="loadMoreEvents()">Load More Events</button>
+      </div>
   </div>  
 </template>
 
@@ -26,6 +32,10 @@ export default {
       text: "The best events happening now.",
       loading: false,
       eventsDataList: [],
+      currentPageNumber: 1,
+      limit: 10,
+      noNewerEvents: false,
+      loadMore: false
     }
   },
   components: {
@@ -36,9 +46,13 @@ export default {
   },
   computed: {
      getEvents() {
+      const queryData = {
+        page: this.currentPageNumber,
+        limit: this.limit
+      }
       this.loading = true;
-      EventsApi.getEvents().then((response) => {
-        this.eventsDataList = response.data
+      EventsApi.getEvents(queryData).then((response) => {
+        this.eventsDataList = response.data.events
         this.loading = false;
       });
     },
@@ -60,6 +74,28 @@ export default {
       if(status){
         return "Sold Out"
       }
+    },
+    loadMoreEvents() {
+      this.currentPageNumber++;
+
+      let eventsList = this.eventsDataList;
+
+      const queryData = {
+        page: this.currentPageNumber,
+        limit: this.limit
+      }
+      this.loadMore = true;
+      EventsApi.getEvents(queryData).then((response) => {
+        const newerEventsList = response.data.events
+
+        if(newerEventsList.length === 0){
+          this.noNewerEvents = true
+        }
+        else {
+          this.eventsDataList = [...eventsList, ...newerEventsList]
+        }
+        this.loadMore = false;
+      });
     }
   }
 }
