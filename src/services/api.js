@@ -10,9 +10,10 @@ class EventsApi {
    * @method
    * @returns {array} Events list
    */
-  static getEvents() {
+  static getEvents(queryData) {
+    const { page, limit } = queryData;
     // const apiUrl = `${process.env.EVENTS_APP_API_BASE_URL}${process.env.EVENTS_APP_API_VERSION}`;
-    const apiUrl = `https://eventsflw.herokuapp.com/v1/events`
+    const apiUrl = `https://eventsflw.herokuapp.com/v1/events?page=${page}&limit=${limit}`
     return axios.get(apiUrl)
       .then((response) => {
         return response.data;
