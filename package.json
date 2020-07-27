@@ -6,8 +6,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "start": "node server.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build:prod": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
     "@braid/vue-formulate": "^2.4.3",
@@ -18,8 +19,15 @@
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
+    "express": "^4.17.1",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-plugin": "^3.2.0",
+
     "moment": "^2.27.0",
     "number-formatter": "^1.2.0",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^1.2.1",
+    "vue-html-loader": "^1.2.4",
     "vue": "^2.5.11",
     "vue-fragment": "^1.5.1",
     "vue-notification": "^1.3.20",
@@ -38,12 +46,16 @@
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^5.0.5",
-    "css-loader": "^0.28.7",
+    "css-loader": "^0.28.11",
     "dotenv": "^8.2.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.4",
+    "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.5.3",
-    "sass-loader": "^6.0.6",
-    "vue-loader": "^13.0.5",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^1.2.1",
+    "vue-html-loader": "^1.2.4",
+    "vue-loader": "^13.7.3",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
