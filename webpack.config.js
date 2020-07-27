@@ -1,5 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: './src/main.js',
@@ -58,6 +60,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
+        include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/
       },
       {
@@ -66,9 +69,28 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.(css|scss)$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
       }
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Events App',
+      template: './index.html',
+      inject: true,
+      filename: 'index.html'
+    }),
+    new ExtractTextPlugin({
+      filename: 'app.css',
+      allChunks: true
+    }),
+  ],
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
