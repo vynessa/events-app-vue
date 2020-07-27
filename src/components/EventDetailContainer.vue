@@ -35,7 +35,7 @@
           </div>
 
           <div class="event-detail__info-main">
-            <img class="event-detail__info-img" :src="event.image || '../assets/anthony-unsplash.jpg'">
+            <img class="event-detail__info-img" :src="event.image">
           </div>
         </div>
 
@@ -74,7 +74,7 @@
 import MainContainer from '../components/MainContainer';
 import EventsApi from '../services/api';
 import Modal from '../components/modals/Modal';
-import { parseTime, parseDateTime } from '../services/utils';
+import { parseTime, parseDateTime, displayToast } from '../services/utils';
 import Checkmark from '../components/alerts/Checkmark';
 import Loader from '../components/loaders/loader';
 
@@ -122,19 +122,14 @@ export default {
       })
       .catch(error => {
         this.notification = {...error, type:'error'};
-        this.displayToast();
+        this.onDisplayToast();
       });
     },
     
   },
   methods: {
-     displayToast() {
-      this.$notify({
-        group: 'toast',
-        title: this.notification.type === 'success' ? 'Success!' : "Error!",
-        text: this.notification.message,
-        type: this.notification.type
-      });
+    onDisplayToast() {
+      displayToast(this.$notify, this.notification);
     },
     setEvent(){
       localStorage.setItem("selectedEvent", JSON.stringify(this.event));
@@ -160,11 +155,11 @@ export default {
             message: response.message, 
             type: response.status
           };
-          this.displayToast();
+          this.onDisplayToast();
         })
         .catch(error => {
           this.notification = {...error, type:'error'};
-          this.displayToast();
+          this.onDisplayToast();
         });
       this.formLoading = false;
       this.formSubmitted = true;

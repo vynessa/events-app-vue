@@ -80,7 +80,7 @@
 <script>
 import EventsApi from '../services/api.js';
 import Loader from '../components/loaders/loader';
-import { formatter } from '../services/utils.js';
+import { formatter, displayToast } from '../services/utils.js';
 
 export default {
   data(){
@@ -116,15 +116,10 @@ export default {
   props: ['cartItems', 'subtotal', 'vat', 'total', 'event'],
   methods: {
     formatPrice(price){
-      return formatter(price)
+      return price === 0 ? price: formatter(price)
     },
-    displayToast() {
-      this.$notify({
-        group: 'toast',
-        title: this.notification.type === "success" ? "Success!" : "Error!",
-        text: this.notification.message,
-        type: this.notification.type
-      });
+    onDisplayToast() {
+      displayToast(this.$notify, this.notification)
     },
     ticketsBought() {
       return this.cartItems.reduce((acc, curr) => {
@@ -141,7 +136,7 @@ export default {
           message: "Please add a ticket to your cart",
           type: 'warn'
         };
-        this.displayToast();
+        this.onDisplayToast();
       } else {
         localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
         this.orderCompleted = !this.orderCompleted
@@ -153,7 +148,7 @@ export default {
           message: "Please enter registeration details",
           type: 'warn'
         };
-        this.displayToast();
+        this.onDisplayToast();
       }
       else{
          const data = {
@@ -176,7 +171,7 @@ export default {
             message: "Your order has been created. Please make payment",
             type: response.status
           };
-          this.displayToast();
+          this.onDisplayToast();
           this.createdOrder = response.data
           this.makePayment();
         })
@@ -185,7 +180,7 @@ export default {
             ...error,
             type: 'error'
           };
-          this.displayToast();
+          this.onDisplayToast();
         });
       }
     },
