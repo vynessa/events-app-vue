@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import MainContainer from '../components/MainContainer'
+import MainContainer from '../components/MainContainer';
 import NoTicket from '../components/NoTicketContainer';
-import Layout from '../pages/Layout';
+import Layout from './Layout';
 
 export default {
   components: {

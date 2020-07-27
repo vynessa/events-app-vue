@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import Card from '../components/cards/Card';
-import Checkmark from '../components/alerts/Checkmark';
+import Card from './cards/Card';
+import Checkmark from './alerts/Checkmark';
 
 export default {
   data() {

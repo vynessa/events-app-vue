@@ -10,7 +10,7 @@
 <script>
 import MainContainer from '../components/MainContainer';
 import EventsList from '../components/EventsListContainer';
-import Layout from '../pages/Layout';
+import Layout from './Layout';
 
 export default {
   components: {

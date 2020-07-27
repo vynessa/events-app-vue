@@ -6,7 +6,7 @@
 
 <script>
 import EventDetail from "../components/EventDetailContainer";
-import Layout from '../pages/Layout';
+import Layout from './Layout';
 
 export default {
   components: {

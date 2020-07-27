@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import Cart from "../components/Cart";
-import OrderSummary from "../components/OrderSummary";
+import Cart from "./Cart";
+import OrderSummary from "./OrderSummary";
 import EventsApi from "../services/api.js";
-import Loader from '../components/loaders/loader';
+import Loader from './loaders/Loader';
 
 export default {
   data () {

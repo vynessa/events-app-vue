@@ -71,12 +71,12 @@
 </template>
 
 <script>
-import MainContainer from '../components/MainContainer';
+import MainContainer from './MainContainer';
 import EventsApi from '../services/api';
-import Modal from '../components/modals/Modal';
+import Modal from './modals/Modal';
+import Checkmark from './alerts/Checkmark';
+import Loader from './loaders/Loader';
 import { parseTime, parseDateTime, displayToast } from '../services/utils';
-import Checkmark from '../components/alerts/Checkmark';
-import Loader from '../components/loaders/loader';
 
 export default {
   data () {

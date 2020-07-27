@@ -30,8 +30,8 @@
 </template>
 
 <script>
+import Loader from './loaders/Loader';
 import EventsApi from "../services/api"
-import Loader from '../components/loaders/loader';
 import { parseTime } from '../services/utils';
 
 export default {
