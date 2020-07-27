@@ -2,28 +2,28 @@
   <div class="order-summary">
     <div v-if="!orderCompleted" class="order-summary__details">
       <div class="order-summary__list">
-        <h3 class="order-summary__header">Order Summary</h3>
+        <h3 class="order-summary__header header-text-caps">Order Summary</h3>
         <hr class="order-summary__horizontal-line">
         <p v-if="cartItems.length === 0" class="empty-state">No items in cart</p>
         <div v-else class="order-summary__selected-item" v-for="cartItem in cartItems" :key="cartItem.ticketId">
-          <p>{{cartItem.ticketCount}} - {{cartItem.ticketTypeName}}</p>
-          <p>{{cartItem.amount}}</p>
+          <h4 class="header-text-normal">{{cartItem.ticketCount}} - {{cartItem.ticketTypeName}}</h4>
+          <p>N{{formatPrice(cartItem.amount)}}</p>
         </div>
       </div>
 
       <div class="order-summary__payment-section">
         <hr class="order-summary__horizontal-line">
         <div class="order-summary__subtotal">
-          <p>Subtotal</p>
-          <p>N{{subtotal}}</p>
+          <h4 class="header-text-normal">Subtotal</h4>
+          <p>N{{formatPrice(subtotal)}}</p>
         </div>
         <div class="order-summary__vat">
-          <p>VAT</p>
-          <p>N{{vat}}</p>
+          <h4 class="header-text-caps">VAT</h4>
+          <p>N{{formatPrice(vat)}}</p>
         </div>
         <div class="order-summary__total">
-          <p>Total Payment</p>
-          <p>N{{total}}</p>
+          <h4 class="header-text-caps">Total Payment</h4>
+          <span class="header-text-caps">N{{formatPrice(total)}}</span>
         </div>
         <button v-on:click="toggleOrderSummary()" class="order-summary__continue-btn btn-yellow">Continue</button>
       </div>
@@ -48,7 +48,9 @@
         <p>Total payment</p>
         <p>N{{total}}</p>
       </div>
-      <button v-on:click="makePayment()" class="order-payment-btn btn-yellow">Pay {{total}}</button>
+
+      <loader v-if="loading" :loading="loading"></loader>
+      <button v-else v-on:click="onCreateOrder()" class="order-payment-btn btn-yellow">Pay {{total}}</button>
     </div>
 
     <footer class="order-summary__footer">
@@ -68,8 +70,8 @@
         </font-awesome-layers>
       </span>
       <div class="order-summary__footer__text">
-        <p>100% customer protection</p>
-        <p>Money back guarantee</p>
+        <h4 class="header-text-normal ">100% customer protection</h4>
+        <p class="event-detail__text">Money back guarantee</p>
       </div>
     </footer>
   </div>
@@ -77,13 +79,17 @@
 
 <script>
 import EventsApi from '../services/api.js';
+import Loader from '../components/loaders/loader';
+import { formatter } from '../services/utils.js';
 
 export default {
   data(){
     return {
+      loading: false,
       orderCompleted: false,
       values: {},
       createdOrder: [],
+      notification: null,
       schema: [
         {
           label: "Full Name",
@@ -106,28 +112,20 @@ export default {
       ]
     }
   },
+  components: { Loader },
   props: ['cartItems', 'subtotal', 'vat', 'total', 'event'],
-  computed: {
-    onCreateOrder() {
-      const data = {
-        event_id: event.id,
-        email: this.values.email,
-        phone: this.values.phone,
-        name: this.values.name,
-        base_amount: this.total,
-        value_added_tax: this.vat,
-        tickets_bought: JSON.stringify(this.ticketsBought())
-      };
-
-      EventsApi.createOrder(data).then((response) => {
-        this.createdOrder = response.data
-      })
-      .catch((error) => {
-        console.log(error)
-      });
-    }
-  },
   methods: {
+    formatPrice(price){
+      return formatter(price)
+    },
+    displayToast() {
+      this.$notify({
+        group: 'toast',
+        title: this.notification.type === "success" ? "Success!" : "Error!",
+        text: this.notification.message,
+        type: this.notification.type
+      });
+    },
     ticketsBought() {
       return this.cartItems.reduce((acc, curr) => {
         acc[curr.ticketId] = curr.ticketCount
@@ -138,7 +136,58 @@ export default {
       return `EVFL_${Math.random().toString(36).substr(2, 9)}`;
     },
     toggleOrderSummary() {
-      this.orderCompleted = !this.orderCompleted
+      if(this.cartItems.length === 0){
+        this.notification = {
+          message: "Please add a ticket to your cart",
+          type: 'warn'
+        };
+        this.displayToast();
+      } else {
+        localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+        this.orderCompleted = !this.orderCompleted
+      }
+    },
+    onCreateOrder() {
+      if(Object.keys(this.values).length === 0) {
+        this.notification = {
+          message: "Please enter registeration details",
+          type: 'warn'
+        };
+        this.displayToast();
+      }
+      else{
+         const data = {
+          event_id: event.id,
+          email: this.values.email,
+          phone: this.values.phone,
+          name: this.values.name,
+          base_amount: this.total,
+          value_added_tax: this.vat,
+          tickets_bought: JSON.stringify(this.ticketsBought())
+        };
+
+        localStorage.setItem('paymentData', JSON.stringify(data));
+
+        this.loading = true;
+
+        EventsApi.createOrder(data).then((response) => {
+          this.loading = true;
+          this.notification = {
+            message: "Your order has been created. Please make payment",
+            type: response.status
+          };
+          this.displayToast();
+          this.createdOrder = response.data
+          this.makePayment();
+        })
+        .catch((error) => {
+          this.notification = {
+            ...error,
+            type: 'error'
+          };
+          this.displayToast();
+        });
+      }
     },
     makePayment() {
       this.onCreateOrder;
@@ -149,25 +198,20 @@ export default {
         amount: this.total,
         currency: "NGN",
         payment_options: "card",
-        redirect_url: // specified redirect URL
-          "/payment-successful",
-          // "https://callbacks.piedpiper.com/flutterwave.aspx?ismobile=34",
-        // meta: {
-        //   consumer_id: 23,
-        //   consumer_mac: "92a3-912ba-1192a",
-        // },
+        redirect_url: "/payment-successful",
         customer: {
           email: this.values.email,
           phone_number: this.values.phone,
           name: this.values.name,
         },
-        // callback: function (data) {
-        //   console.log(data);
-        // },
+        callback: function (data) {
+          console.log('payment data', data);
+          localStorage.removeItem('cartItems');
+        },
         customizations: {
           title: "Events Listing App",
           description: "Payment Gateway",
-          logo: "https://assets.piedpiper.com/logo.png",
+          logo: "",
         },
       });
     }

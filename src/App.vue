@@ -1,27 +1,14 @@
 <template>
   <div id="app">
-    <component :is="layout">
-      <router-view :layout.sync="layout"/>
-    </component>
+    <router-view />
+    <notifications group="toast" />
   </div>
-
-  
 </template>
 
 <script>
 import '../src/stylesheet/main.scss';
-import Layout from './pages/Layout';
 
 export default {
-  name: 'app',
-  data() {
-    return {
-      layout: 'div',
-    };
-  },
+  name: 'app'
 }
 </script>
-
-<style lang="scss">
-
-</style>

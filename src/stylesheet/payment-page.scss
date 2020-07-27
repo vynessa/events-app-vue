@@ -3,6 +3,7 @@
   */
 .event-payment-wrapper {
   display: flex;
+  height: 100vh;
 
   @include respond-to(tablet-and-mobile){
     flex-direction: column;
@@ -102,6 +103,13 @@
   }
 }
 
+.order-registeration {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .order-summary__selected-item,
 .order-summary__subtotal,
 .order-summary__vat,
@@ -135,6 +143,7 @@
 
 .order-summary__footer {
   display: flex;
+  margin: 1rem 0 0 0;
 }
 
 .order-summary__footer__icon {

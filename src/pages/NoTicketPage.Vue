@@ -1,8 +1,10 @@
 <template>
-  <main-container>
-    <no-ticket>
-    </no-ticket>
-  </main-container>
+  <layout>
+    <main-container>
+      <no-ticket>
+      </no-ticket>
+    </main-container>
+  </layout>
 </template>
 
 <script>
@@ -11,12 +13,10 @@ import NoTicket from '../components/NoTicketContainer';
 import Layout from '../pages/Layout';
 
 export default {
-  created() {
-    this.$emit('update:layout', Layout);
-  },
   components: {
     MainContainer,
-    NoTicket
+    NoTicket,
+    Layout
   }
 }
 </script>

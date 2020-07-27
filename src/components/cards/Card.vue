@@ -1,5 +1,5 @@
 <template>
-  <div class="card no-ticket-card">
+  <div class="card cardWrapper">
     <slot></slot>
   </div>
 </template>
@@ -7,11 +7,6 @@
 <script>
 
 export default {
-  data () {
-    return {
-
-    }
-  }
 }
 </script>
 
