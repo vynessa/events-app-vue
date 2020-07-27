@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { formatter } from '../services/utils.js';
+import { formatter } from '../services/utils';
 
 export default {
   data() {

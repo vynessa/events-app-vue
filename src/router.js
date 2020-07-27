@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import EventsListPage from "./pages/EventsListPage"
-import EventDetailPage from "./pages/EventDetailPage"
-import PaymentPage from './pages/PaymentPage'
-import PaymentSuccessfulPage from './pages/PaymentSuccessfulPage.vue'
-import NoTicketPage from "./pages/NoTicketPage"
+import Vue from 'vue';
+import Router from 'vue-router';
+import EventsListPage from './pages/EventsListPage.vue';
+import EventDetailPage from './pages/EventDetailPage.vue';
+import PaymentPage from './pages/PaymentPage.vue';
+import PaymentSuccessfulPage from './pages/PaymentSuccessfulPage.vue';
+import NoTicketPage from './pages/NoTicketPage.vue';
 
 Vue.use(Router);
 

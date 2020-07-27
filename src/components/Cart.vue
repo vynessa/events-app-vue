@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import TicketType from '../components/TicketType';
+import TicketType from './TicketType';
 import { parseTime } from '../services/utils';
 
 export default {

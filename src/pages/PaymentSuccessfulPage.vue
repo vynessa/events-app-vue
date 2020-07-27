@@ -19,7 +19,7 @@
 
 <script>
 import MainContainer from '../components/MainContainer'
-import Layout from '../pages/Layout';
+import Layout from './Layout';
 import Checkmark from '../components/alerts/Checkmark';
 import Card from '../components/cards/Card';
 

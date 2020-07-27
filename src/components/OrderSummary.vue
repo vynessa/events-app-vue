@@ -78,8 +78,8 @@
 </template>
 
 <script>
+import Loader from './loaders/Loader';
 import EventsApi from '../services/api.js';
-import Loader from '../components/loaders/loader';
 import { formatter, displayToast } from '../services/utils.js';
 
 export default {

@@ -7,9 +7,9 @@ import { faTimes, faBars,
          faMinusCircle, faPlusCircle,
          faArrowLeft, faCertificate, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { faMap } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
-import router from './router'
-import babelPolyfill from 'babel-polyfill'
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome';
+import router from './router';
+import babelPolyfill from 'babel-polyfill';
 
 library.add(
   faMap, faTimes,
