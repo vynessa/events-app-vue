@@ -1,15 +1,18 @@
 <template>
   <div>
-    <h1 class="header-text">
+    <h1 class="events-header-text">
       {{text}}
     </h1>
     <loader v-if="loading" :loading="loading"></loader>
     <div v-else class="events-list-wrapper">
       <div class="events-list"> 
-        <div class="events-list__item" v-for="event in eventsDataList" :key="event.id">
+        <div 
+          class="events-list__item" 
+          v-for="event in eventsDataList" 
+          v-on:click="displayEvent(event.id)" 
+          :key="event.id">
           <img 
             class="events-list__img" 
-            v-on:click="displayEvent(event.id)"
             :src="event.image">
           <h6 class="events-list__date">{{displayParsedTime(event.start_time)}}</h6>
           <h4 class="events-list__title">{{event.name}}</h4>
@@ -41,7 +44,8 @@ export default {
       limit: 6,
       noNewerEvents: false,
       // eventImg: require.context('../assets/anthony-unsplash'),
-      loadMore: false
+      loadMore: false,
+      notification: null
     }
   },
   components: {
@@ -56,14 +60,28 @@ export default {
         page: this.currentPageNumber,
         limit: this.limit
       }
+
       this.loading = true;
+
       EventsApi.getEvents(queryData).then((response) => {
         this.eventsDataList = response.data.events
         this.loading = false;
+      })
+      .catch(error => {
+        this.notification = {...error, type:'error'};
+        this.displayToast;
       });
-    }
+    },
   },
   methods: {
+    displayToast() {
+      this.$notify({
+        group: 'toast',
+        title: this.notification.type === "success" ? "Success!" : "Error!",
+        text: this.notification.message,
+        type: this.notification.type
+      });
+    },
     // getImgUrl() {
     //   var image = require.context('../assets/', false, /\.jpeg$/)
     //   return image(this.eventImg + ".jpeg")
@@ -93,9 +111,10 @@ export default {
       const queryData = {
         page: this.currentPageNumber,
         limit: this.limit
-      }
+      };
       this.loadMore = true;
-      EventsApi.getEvents(queryData).then((response) => {
+
+      EventsApi.getEvents(queryData).then((response) => {        
         const newerEventsList = response.data.events
 
         if(newerEventsList.length === 0){
@@ -105,6 +124,10 @@ export default {
           this.eventsDataList = [...eventsList, ...newerEventsList]
         }
         this.loadMore = false;
+      })
+      .catch(error => {
+        this.notification = {...error, type: response.data.status};
+        this.displayToast();
       });
     }
   }

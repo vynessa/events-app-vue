@@ -18,11 +18,12 @@
 
     <div class="event-ticket-category">
       <ticket-type 
-        v-for="eventTicketType in eventTicketTypes"
+        v-for="(eventTicketType, index) in eventTicketTypes"
         :eventTicketType="eventTicketType"
         :key="eventTicketType.id"
         :add-to-cart="addToCart"
         :remove-from-cart="removeFromCart"
+        :newTicketCount="setTicketCount(index)"
       >
       </ticket-type>
       <p class="event-detail__text">Ticket sale ends on 22nd November 2019</p>
@@ -35,8 +36,21 @@ import TicketType from '../components/TicketType';
 import { parseTime } from '../services/utils';
 
 export default {
-  props: ['event', 'eventTicketTypes'],
+  props: ['event', 'eventTicketTypes', 'cartItems'],
   methods: {
+    setTicketCount(index, cartItems){
+      if(!this.cartItems || this.cartItems.length === 0){
+        return 0;
+      }
+      if(this.cartItems) {
+        if(this.cartItems[index]){
+          return this.cartItems[index].ticketCount
+        }
+        else{
+          return 0
+        }
+      }
+    },
     addToCart(eventTicketType, ticketCount) {
       this.$emit('add-click', {...eventTicketType}, ticketCount)
     },
