@@ -61,7 +61,8 @@ export default {
       return parseTime(time)
     },
     goBack(){
-      window.history.back()
+      localStorage.removeItem('cartItems');
+      window.history.back();
     }
   },
   components: {
