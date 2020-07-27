@@ -6,9 +6,8 @@
   border-radius: 10px;
 }
 
-.no-ticket-card {
+.cardWrapper{
   width: 32%;
-  // height: 12rem;
 
   @include respond-to(tablet-and-mobile){
     width: unset;

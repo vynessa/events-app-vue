@@ -7,6 +7,7 @@
         @remove-click="removefromCart"
         :event="event"
         :eventTicketTypes="eventTicketTypes"
+        :cartItems="cartItems"
       >
       </cart>
 
@@ -43,6 +44,9 @@ export default {
   },
   created() {
     this.getEventTicketTypes();
+    this.getCartItems();
+    this.cartItemsSubTotal();
+    this.cartItemsTotal();
   },
   components: {
     Cart,
@@ -50,6 +54,12 @@ export default {
     Loader
   },
   methods: {
+    getCartItems(){
+      const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+      if(cartItems){
+        this.cartItems = cartItems;
+      }
+    },
     addNewCartItem(eventTicketType, cartItems) {
       cartItems.push({
         ticketCount: 1,
@@ -124,13 +134,15 @@ export default {
         }
         else {
           this.cartItems.forEach((cartItem, index) => {
-            this.cartItems.splice(index, 1) ;
+            if (cartItem.ticketId === eventTicketType.id) {
+              this.cartItems.splice(index, 1) ;
+            }
           });
-          
         }
       }
-      this.cartItemsSubTotal;
-      this.cartItemsTotal;
+      return this.cartItems
+      this.cartItemsSubTotal();
+      this.cartItemsTotal();
     }
   }
 }

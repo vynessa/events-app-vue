@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
     "moment": "^2.27.0",
+    "number-formatter": "^1.2.0",
     "vue": "^2.5.11",
     "vue-fragment": "^1.5.1",
     "vue-notification": "^1.3.20",

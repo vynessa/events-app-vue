@@ -43,10 +43,10 @@
 
         <div class="event-detail__info">
           <div class="event-detail__info-extra">
-            <h6 class="event-detail__info-header">Venue</h6>
+            <h6 class="event-detail__info-header event-detail__venue">Venue</h6>
             <h4 class="event-detail__info-text">{{event.venue}}</h4>
 
-            <div class="event-detail__directions">
+            <div class="event-detail__directions event-detail__directions">
               <font-awesome-icon :icon="['far', 'map']" size="1x" :style="{ color: '#F5A623' }" />
               <a href="" class="event-detail__directions-links">
                 View map for directions
@@ -54,11 +54,12 @@
             </div>
           </div>
           <div class="event-detail__info-extra">
-            <h6 class="event-detail__info-header">Date and time</h6>
+            <h6 class="event-detail__info-header event-detail__date">Date and time</h6>
             <h4 class="event-detail__info-text">{{displayParsedDateTime(event.start_time)}}</h4>
 
-            <h6 class="event-detail__info-header">Social links</h6>
+            <h6 class="event-detail__info-header event-detail__social">Social links</h6>
             <div class="event-detail__social-links" v-if="event.social_links && event.social_links.length > 0"> 
+              N/A
               <!-- <p v-for="(socialLink, index)in event.social_links" :key="index" class="navbar-links">{{socialLink}}</p> -->
             </div> 
             <p class="event-detail__info-text" v-else>N/A</p>
@@ -85,6 +86,7 @@ export default {
       event: null,
       showRegisterModal: false,
       formSubmitted: false,
+      notification: null,
       values: {},
       schema: [
         {
@@ -117,10 +119,23 @@ export default {
       EventsApi.getEventDetail(this.$route.params.id).then((response) => {
         this.event = response.data
         this.loading = false;
+      })
+      .catch(error => {
+        this.notification = {...error, type:'error'};
+        this.displayToast();
       });
-    }
+    },
+    
   },
   methods: {
+     displayToast() {
+      this.$notify({
+        group: 'toast',
+        title: this.notification.type === 'success' ? 'Success!' : "Error!",
+        text: this.notification.message,
+        type: this.notification.type
+      });
+    },
     setEvent(){
       localStorage.setItem("selectedEvent", JSON.stringify(this.event));
       this.$router.push('/payment-page');
@@ -141,11 +156,16 @@ export default {
       this.formLoading = true;
       EventsApi.postRegistrationDetails(this.values)
         .then((response) => {
-
+          this.notification = { 
+            message: response.message, 
+            type: response.status
+          };
+          this.displayToast();
         })
-        .catch((error) => {
-          return console.log(error)
-        })
+        .catch(error => {
+          this.notification = {...error, type:'error'};
+          this.displayToast();
+        });
       this.formLoading = false;
       this.formSubmitted = true;
     },

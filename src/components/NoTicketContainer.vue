@@ -1,8 +1,8 @@
 <template>
   <div class="no-ticket-container">
-    <h4 class="">
+    <h3 class="header-text-normal no-ticket-text">
       Enter your email and we'll send your tickets right away!
-    </h4>
+    </h3>
     <card>
       <div v-if="!formSubmitted">
         <FormulateInput
@@ -31,12 +31,11 @@
 import Card from '../components/cards/Card';
 import Checkmark from '../components/alerts/Checkmark';
 
-
 export default {
   data() {
     return {
       value: "",
-      formSubmitted: true
+      formSubmitted: false
     }
   },
   methods: {

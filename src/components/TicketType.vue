@@ -2,7 +2,7 @@
   <div class="event-ticket-wrapper">
     <div class="event-ticket__category">
       <p class="event-ticket-type__name">{{eventTicketType.name}}</p>
-      <p class="event-ticket-type__price">{{eventTicketType.price}}</p>
+      <p class="event-ticket-type__price">N{{formatPrice(eventTicketType.price)}}</p>
       <div class="event-cart__btn">
         <span class="event-cart__btn__remove" v-bind:disabled="setDisabled()" @click="removeFromCart(eventTicketType, --ticketCount)">
           <font-awesome-icon 
@@ -27,18 +27,32 @@
 </template>
 
 <script>
+import { formatter } from '../services/utils.js';
+
 export default {
   data() {
     return {
       ticketCount: 0
     }
   },
+  created() {
+    this.setTicketCount;
+  },
+  computed: {
+    setTicketCount(){
+      this.newTicketCount ? this.ticketCount = this.newTicketCount : this.ticketCount
+    }
+  },
   props: {
     eventTicketType: Object,
     addToCart: Function,
-    removeFromCart: Function
+    removeFromCart: Function,
+    newTicketCount: Number
   },
   methods: {
+    formatPrice(price){
+      return formatter(price)
+    },
     setDisabled(){
       this.ticketCount === 0 ? true : false;
     }
