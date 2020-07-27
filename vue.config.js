@@ -1,4 +1,6 @@
 module.exports = {
+  publicPath: '/',
+  outputDir: 'dist/',
   css: {
     loaderOptions: {
       sass: {
