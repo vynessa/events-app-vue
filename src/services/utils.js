@@ -16,8 +16,29 @@ export const formatter = (numberData) => {
 export const displayToast = (notifier, notification) => {
   return notifier({
     group: 'toast',
-    title: notification.type === "success" ? "Success!" : "Error!",
+    title: toastHeader(notification.type),
     text: notification.message,
     type: notification.type
   });
 };
+
+export const toastHeader = (notificationType) => {
+  switch(notificationType){
+    case "success":
+      return "Success!"
+    case "error":
+      return "Error"
+    case "warn":
+      return "Warning!"
+    default:
+      return ""
+  } 
+}
+
+export const ApiServiceException = (e, _meta) => {
+  if (!e.response)
+    e = {response: {status: 0, statusText: "Unknown Error", data: {message: "An Error Occurred"}}};
+  this.code = e.response.status;
+  this.message = e.response.data.message || e.response.statusText;
+  this.meta = _meta;
+}

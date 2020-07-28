@@ -1,4 +1,4 @@
-// @import "bourbon";
+@import 'normalize';
 @import '../../node_modules/@braid/vue-formulate/themes/snow/snow.scss';
 @import 'base';
 @import 'navbar';
@@ -14,7 +14,6 @@
 @import 'no-ticket';
 @import 'loader';
 @import 'footer';
-
 
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -80,14 +79,3 @@ li {
     margin: 0;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
