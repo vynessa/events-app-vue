@@ -3,8 +3,8 @@
     <h1 class="events-header-text">
       {{text}}
     </h1>
-    <loader v-if="loading" :loading="loading"></loader>
-    <div v-else class="events-list-wrapper">
+    <!-- <loader v-if="loading" :loading="loading"></loader> -->
+    <div class="events-list-wrapper">
       <div class="events-list"> 
         <div 
           class="events-list__item" 
@@ -21,7 +21,7 @@
 
       </div>
       <div class="pagination-wrapper">
-        <loader v-if="loadMore" :loading="loadMore"></loader>
+        <!-- <loader v-if="loadMore" :loading="loadMore"></loader> -->
         <p v-if="noNewerEvents">You are up to date!</p>
         <button v-else class="btn-yellow pagination-btn" v-on:click="loadMoreEvents()">Load More Events</button>
       </div>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import Loader from './loaders/Loader';
+// import Loader from './loaders/Loader';
 import EventsApi from "../services/api"
 import { parseTime } from '../services/utils';
 
@@ -48,9 +48,9 @@ export default {
       notification: null
     }
   },
-  components: {
-    Loader
-  },
+  // components: {
+  //   Loader
+  // },
   created() {
     this.getEvents;
   },

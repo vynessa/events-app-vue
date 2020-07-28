@@ -23,8 +23,8 @@
     </modal>
 
     <main-container>  
-      <loader v-if="loading" :loading="loading"></loader>
-      <div v-else class="event-detail">
+      <!-- <loader v-if="loading" :loading="loading"></loader> -->
+      <div class="event-detail">
         <div class="event-detail__info">
           <div class="event-detail__info-main">
             <h6 class="event-detail__info-header">{{displayParsedDate(event.start_time)}}</h6>
@@ -75,7 +75,7 @@ import MainContainer from './MainContainer';
 import EventsApi from '../services/api';
 import Modal from './modals/Modal';
 import Checkmark from './alerts/Checkmark';
-import Loader from './loaders/Loader';
+// import Loader from './loaders/Loader';
 import { parseTime, parseDateTime, displayToast } from '../services/utils';
 
 export default {
@@ -168,7 +168,7 @@ export default {
   components: {
     MainContainer,
     Modal,
-    Loader,
+    // Loader,
     Checkmark
   }
 }

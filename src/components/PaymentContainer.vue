@@ -1,7 +1,7 @@
 <template>
   <div>
-    <loader v-if="loading" :loading="loading"></loader>
-    <div v-else class="event-payment-wrapper">
+    <!-- <loader v-if="loading" :loading="loading"></loader> -->
+    <div class="event-payment-wrapper">
       <cart 
         @add-click="updateCart"
         @remove-click="removefromCart"
@@ -27,7 +27,7 @@
 import Cart from "./Cart";
 import OrderSummary from "./OrderSummary";
 import EventsApi from "../services/api.js";
-import Loader from './loaders/Loader';
+// import Loader from './loaders/Loader';
 
 export default {
   data () {
@@ -51,7 +51,7 @@ export default {
   components: {
     Cart,
     OrderSummary,
-    Loader
+    // Loader
   },
   methods: {
     getCartItems(){

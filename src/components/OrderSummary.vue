@@ -49,8 +49,8 @@
         <p>N{{total}}</p>
       </div>
 
-      <loader v-if="loading" :loading="loading"></loader>
-      <button v-else v-on:click="onCreateOrder()" class="order-payment-btn btn-yellow">Pay {{total}}</button>
+      <!-- <loader v-if="loading" :loading="loading"></loader> -->
+      <button v-on:click="onCreateOrder()" class="order-payment-btn btn-yellow">Pay {{total}}</button>
     </div>
 
     <footer class="order-summary__footer">
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import Loader from './loaders/Loader';
+// import Loader from './loaders/Loader';
 import EventsApi from '../services/api.js';
 import { formatter, displayToast } from '../services/utils.js';
 
@@ -112,7 +112,7 @@ export default {
       ]
     }
   },
-  components: { Loader },
+  // components: { Loader },
   props: ['cartItems', 'subtotal', 'vat', 'total', 'event'],
   methods: {
     formatPrice(price){
