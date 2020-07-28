@@ -23,11 +23,11 @@
     </modal>
 
     <main-container>  
-      <!-- <loader v-if="loading" :loading="loading"></loader> -->
-      <div class="event-detail">
+      <loader v-if="loading"></loader>
+      <div v-else class="event-detail">
         <div class="event-detail__info">
           <div class="event-detail__info-main">
-            <h6 class="event-detail__info-header">{{displayParsedDate(event.start_time)}}</h6>
+            <h6 class="event-detail__info-header">{{displayParsedDate(event.start_time) || 'N/A'}}</h6>
             <h4 class="event-detail__info-title">{{event.name}}</h4>
             <em class="event-detail__info-description">{{event.description}}</em>
             <p class="event-detail__info-price">N5,000 - N1,000,000</p>
@@ -35,7 +35,7 @@
           </div>
 
           <div class="event-detail__info-main">
-            <img class="event-detail__info-img" :src="event.image">
+            <img class="event-detail__info-img" :src="event.image || fallBackImage">
           </div>
         </div>
 
@@ -55,12 +55,13 @@
           </div>
           <div class="event-detail__info-extra">
             <h6 class="event-detail__info-header event-detail__date">Date and time</h6>
-            <h4 class="event-detail__info-text">{{displayParsedDateTime(event.start_time)}}</h4>
+            <h4 class="event-detail__info-text">{{displayParsedDateTime(event.start_time) || 'N/A'}}</h4>
 
             <h6 class="event-detail__info-header event-detail__social">Social links</h6>
-            <div class="event-detail__social-links" v-if="event.social_links && event.social_links.length > 0"> 
-              N/A
-              <!-- <p v-for="(socialLink, index)in event.social_links" :key="index" class="navbar-links">{{socialLink}}</p> -->
+            <div 
+              class="event-detail__social-links" 
+              v-if="typeof event.social_links === 'object' && event.social_links.length > 0"> 
+              <p v-for="socialLink in event.social_links" :key="socialLink.id" class="navbar-links">{{socialLink}}</p>
             </div> 
             <p class="event-detail__info-text" v-else>N/A</p>
           </div>
@@ -75,7 +76,7 @@ import MainContainer from './MainContainer';
 import EventsApi from '../services/api';
 import Modal from './modals/Modal';
 import Checkmark from './alerts/Checkmark';
-// import Loader from './loaders/Loader';
+import Loader from '../components/loaders/Loader';
 import { parseTime, parseDateTime, displayToast } from '../services/utils';
 
 export default {
@@ -88,6 +89,9 @@ export default {
       formSubmitted: false,
       notification: null,
       values: {},
+      fallBackImage: {
+        'background-image': `url(${require('../assets/anthony-unsplash.jpg')})`
+      },
       schema: [
         {
           label: "Full Name",
@@ -116,7 +120,10 @@ export default {
   computed: {
     getEventDetail() {
       this.loading = true;
-      EventsApi.getEventDetail(this.$route.params.id).then((response) => {
+
+      const apiService = new EventsApi();
+
+      apiService.getEventDetail(this.$route.params.id).then((response) => {
         this.event = response.data
         this.loading = false;
       })
@@ -149,7 +156,10 @@ export default {
     },
     onSumbitRegisterForm() {
       this.formLoading = true;
-      EventsApi.postRegistrationDetails(this.values)
+
+      const apiService = new EventsApi();
+
+      apiService.postRegistrationDetails(this.values, event.id)
         .then((response) => {
           this.notification = { 
             message: response.message, 
@@ -168,7 +178,7 @@ export default {
   components: {
     MainContainer,
     Modal,
-    // Loader,
+    Loader,
     Checkmark
   }
 }

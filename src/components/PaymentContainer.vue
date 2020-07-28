@@ -1,7 +1,7 @@
 <template>
   <div>
-    <!-- <loader v-if="loading" :loading="loading"></loader> -->
-    <div class="event-payment-wrapper">
+    <loader v-if="loading" class="payment__loader"></loader>
+    <div v-else class="event-payment-wrapper">
       <cart 
         @add-click="updateCart"
         @remove-click="removefromCart"
@@ -24,10 +24,10 @@
 </template>
 
 <script>
+import Loader from '../components/loaders/Loader';
 import Cart from "./Cart";
 import OrderSummary from "./OrderSummary";
 import EventsApi from "../services/api.js";
-// import Loader from './loaders/Loader';
 
 export default {
   data () {
@@ -51,7 +51,7 @@ export default {
   components: {
     Cart,
     OrderSummary,
-    // Loader
+    Loader
   },
   methods: {
     getCartItems(){
@@ -76,7 +76,6 @@ export default {
       this.subtotal = sumOfCartItems;
       return;
     },
-
     cartItemsTotal(){
       this.total = this.subtotal + this.vat;
       return
@@ -84,7 +83,10 @@ export default {
     getEventTicketTypes(eventId) {
       this.loading = true;
       this.event = JSON.parse(localStorage.getItem('selectedEvent'));
-      EventsApi.getEventTicketTypes(this.event.id).then((response) => {
+
+      const apiService = new EventsApi();
+
+      apiService.getEventTicketTypes(this.event.id).then((response) => {
         this.eventTicketTypes = response.data
         this.loading = false;
       })
@@ -115,6 +117,7 @@ export default {
           this.addNewCartItem(eventTicketType, this.cartItems);
         }
       }
+      localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
       this.cartItemsSubTotal();
       this.cartItemsTotal();
     },
@@ -140,10 +143,14 @@ export default {
           });
         }
       }
-      return this.cartItems
+      localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
       this.cartItemsSubTotal();
       this.cartItemsTotal();
     }
+  },
+  destroyed() {
+    this.$destroy();
+    localStorage.removeItem('cartItems');
   }
 }
 </script>

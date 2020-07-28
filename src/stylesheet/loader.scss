@@ -1,3 +1,45 @@
-.loader {
-  text-align: center;
+/** LOADERS */
+
+.loader{
+  // margin: 0px;
+	// position: absolute;
+	// top: 50%;
+	// left: 50%;
+	// transform: translate(-50%, -50%);
+	// font-size: 40px;
+	// color: grey;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.loading-spinner {
+	pointer-events: none;
+	width: 5rem;
+	height: 5rem;
+	border: 0.1em solid transparent;
+	border-color: $background-white;
+	border-top-color: $brand-yellow;
+	border-bottom-color: $brand-yellow;
+	border-radius: 50%;
+	animation: loadingspin 1s linear infinite;
+}
+
+.event-list__loader {
+	margin: 10rem 0;
+}
+
+.pagination__loader {
+	margin: 5rem 0;
+}
+
+.payment__loader {
+	margin: 20rem 0;
+}
+
+@keyframes loadingspin {
+	100% {
+			transform: rotate(360deg)
+	}
 }

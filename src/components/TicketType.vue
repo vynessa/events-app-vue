@@ -4,20 +4,43 @@
       <p class="event-ticket-type__name">{{eventTicketType.name}}</p>
       <p class="event-ticket-type__price">N{{formatPrice(eventTicketType.price)}}</p>
       <div class="event-cart__btn">
-        <span class="event-cart__btn__remove" v-bind:disabled="setDisabled()" @click="removeFromCart(eventTicketType, --ticketCount)">
-          <font-awesome-icon 
-          :icon="['fas', 'minus-circle']" 
-          size="xs"
-          :style="{ color: '#fff' }"
-          />
+        <span 
+          role="button" 
+          class="event-cart__btn__remove" 
+          v-bind:disabled="setDisabled()" 
+          @click="removeFromCart(eventTicketType, --ticketCount)">
+            <font-awesome-layers>
+              <font-awesome-icon 
+              :icon="['fas', 'circle']" 
+              size="1x"
+              :style="{color: '#fff'}"
+              />
+              <font-awesome-icon 
+              :icon="['fas', 'minus']" 
+              size="xs"
+              :style="{ color: '#000' }"
+              transform="shrink-6"
+              />
+            </font-awesome-layers>
         </span>
         <span class="event-cart__btn__ticket-count">{{ticketCount}}</span>
-        <span class="event-cart__btn__add" @click="addToCart(eventTicketType, ++ticketCount)">
-          <font-awesome-icon 
-          :icon="['fas', 'plus-circle']" 
-          size="xs"
-          :style="{ color: '#fff' }"
-          />
+        <span 
+          role="button" 
+          class="event-cart__btn__add" 
+          @click="addToCart(eventTicketType, ++ticketCount)">
+            <font-awesome-layers>
+              <font-awesome-icon 
+              :icon="['fas', 'circle']" 
+              size="1x"
+              :style="{color: '#fff'}"
+              />
+              <font-awesome-icon 
+              :icon="['fas', 'plus']" 
+              size="xs"
+              :style="{ color: '#000' }"
+              transform="shrink-6"
+              />
+            </font-awesome-layers>
         </span>
       </div>
     </div>
@@ -54,7 +77,7 @@ export default {
       return formatter(price)
     },
     setDisabled(){
-      this.ticketCount === 0 ? true : false;
+      this.ticketCount <= 0 ? true : false;
     }
   }
 

@@ -55,6 +55,7 @@ export default {
       this.$emit('add-click', {...eventTicketType}, ticketCount)
     },
     removeFromCart(eventTicketType, ticketCount){
+      if (ticketCount === 0) return;
       this.$emit('remove-click', {...eventTicketType}, ticketCount)
     },
     displayParsedDate(time) {
