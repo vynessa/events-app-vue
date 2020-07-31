@@ -46,11 +46,11 @@
       />
       <div class="order-summary__total">
         <p>Total payment</p>
-        <p>N{{total}}</p>
+        <p>N{{formatPrice(total)}}</p>
       </div>
 
-      <loader v-if="loading" :loading="loading"></loader>
-      <button v-else v-on:click="onCreateOrder()" class="order-payment-btn btn-yellow">Pay {{total}}</button>
+      <loader v-if="loading"></loader>
+      <button v-else v-on:click="onCreateOrder()" class="order-payment-btn btn-yellow">Pay {{formatPrice(total)}}</button>
     </div>
 
     <footer class="order-summary__footer">
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import Loader from './loaders/Loader';
+import Loader from '../components/loaders/Loader';
 import EventsApi from '../services/api.js';
 import { formatter, displayToast } from '../services/utils.js';
 
@@ -165,7 +165,9 @@ export default {
 
         this.loading = true;
 
-        EventsApi.createOrder(data).then((response) => {
+        const apiService = new EventsApi();
+
+        apiService.createOrder(data).then((response) => {
           this.loading = true;
           this.notification = {
             message: "Your order has been created. Please make payment",
@@ -188,7 +190,7 @@ export default {
       this.onCreateOrder;
 
       FlutterwaveCheckout({
-        public_key: "FLWPUBK-30e949898e40a17e49e4bc880b5176b5-X",
+        public_key: `${process.env.FL_PUBLIC_KEY}`,
         tx_ref: this.generateIdRef(),
         amount: this.total,
         currency: "NGN",

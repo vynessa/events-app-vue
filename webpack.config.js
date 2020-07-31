@@ -1,7 +1,9 @@
-var path = require('path')
-var webpack = require('webpack')
+require('dotenv').config();
+var path = require('path');
+var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: './src/main.js',
@@ -14,26 +16,15 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          'vue-style-loader',
-          'css-loader'
-        ],
+        use: [ 'vue-style-loader', 'css-loader' ],
       },
       {
         test: /\.scss$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader'
-        ],
+        use: [ 'vue-style-loader', 'css-loader', 'sass-loader' ],
       },
       {
         test: /\.sass$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'sass-loader?indentedSyntax'
-        ],
+        use: [ 'vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax' ],
       },
       {
         test: /\.vue$/,
@@ -68,28 +59,43 @@ module.exports = {
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'
-        }
+        },
       },
       {
         test: /\.(css|scss)$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
-        })
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '/src/stylesheet/main.scss',
+            },
+          },
+          'css-loader', 'sass-loader'
+        ],
       }
     ]
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       title: 'Events App',
       template: './index.html',
       inject: true,
-      filename: 'index.html'
+      chunksSortMode: 'dependency'
     }),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: 'app.css',
-      allChunks: true
+      chunkFilename: 'app.min.css',
     }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+        EVENTS_APP_API_BASE_URL: JSON.stringify(process.env.EVENTS_APP_API_BASE_URL),
+        EVENTS_APP_API_VERSION: JSON.stringify(process.env.EVENTS_APP_API_VERSION),
+        FL_PUBLIC_KEY: JSON.stringify(process.env.FL_PUBLIC_KEY),
+      },
+      'process.env.LOGGER_LEVEL': JSON.stringify('info')
+    })
   ],
   resolve: {
     alias: {
@@ -98,14 +104,31 @@ module.exports = {
     extensions: ['*', '.js', '.vue', '.json']
   },
   devServer: {
+    publicPath: '/',
     historyApiFallback: true,
-    noInfo: true,
-    overlay: true
+    overlay: true,
+    port: 7000,
   },
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true,
+          sourceMap: true,
+          comments: false,
+          beautify: false,
+        },
+      })
+    ]
+  }
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -114,13 +137,10 @@ if (process.env.NODE_ENV === 'production') {
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
+        NODE_ENV: JSON.stringify('development'),
+        EVENTS_APP_API_BASE_URL: JSON.stringify(process.env.EVENTS_APP_API_BASE_URL),
+        EVENTS_APP_API_VERSION: JSON.stringify(process.env.EVENTS_APP_API_VERSION),
+        FL_PUBLIC_KEY: JSON.stringify(process.env.FL_PUBLIC_KEY)
       }
     }),
     new webpack.LoaderOptionsPlugin({

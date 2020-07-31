@@ -1,79 +1,111 @@
 import axios from 'axios';
+import { ApiServiceException } from '../services/utils';
+
+const BASE_URL = `${process.env.EVENTS_APP_API_BASE_URL}${process.env.EVENTS_APP_API_VERSION}`;
 
 /**
  * API class
  * @class EventsApi
  */
 class EventsApi {
+  constructor(){
+    this.httpAxClient = axios.create({
+      baseURL: BASE_URL,
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+  }
+
+  /**
+   * @description Memoizes data
+   * @param {function} method 
+   * @returns {function} method
+   */
+  memoizedData(method) {
+    let cache = {};
+    
+    return new Promise ((resolve) =>  {
+      let args = JSON.stringify(arguments);
+      if(cache[args]){
+        return cache[args]
+      }else {
+        cache[args] = method.apply(this, arguments)
+      }
+      // cache[args] = cache[args] || method.apply(this, arguments);
+      return cache[args];
+    });
+  }
+
   /**
    * @description Gets all events list
    * @method
    * @returns {array} Events list
    */
-  static getEvents(queryData) {
+  getEvents(queryData) {
     const { page, limit } = queryData;
-    // const apiUrl = `${process.env.EVENTS_APP_API_BASE_URL}${process.env.EVENTS_APP_API_VERSION}`;
-    const apiUrl = `https://eventsflw.herokuapp.com/v1/events?page=${page}&limit=${limit}`
-    return axios.get(apiUrl)
+    const apiUrl = `/events?page=${page}&limit=${limit}`;
+
+    return this.httpAxClient.get(apiUrl)
       .then((response) => {
         return response.data;
       })
       .catch((error) => {
-        return error;
+        throw new ApiServiceException(error);
       });
   }
 
-   /**
+  /**
    * @description Gets specific events 
    * @method
    * @param {integer} eventId
    * @returns {object} Event
    */
-  static getEventDetail(eventId) {
-    // const apiUrl = `${process.env.EVENTS_APP_API_BASE_URL}${process.env.EVENTS_APP_API_VERSION}`;
-    const apiUrl = `https://eventsflw.herokuapp.com/v1/events/${eventId}`
-    return axios.get(apiUrl)
+  getEventDetail(eventId) {
+    const apiUrl = `/events/${eventId}`;
+
+    return this.httpAxClient.get(apiUrl)
       .then((response) => {
         return response.data;
       })
       .catch((error) => {
-        return error;
+        throw new ApiServiceException(error);
       });
   }
 
-   /**
+  /**
    * @description Gets specific event ticket types 
    * @method
    * @param {integer} eventId
    * @returns {array} Event ticket types
    */
-  static getEventTicketTypes(eventId) {
-    // const apiUrl = `${process.env.EVENTS_APP_API_BASE_URL}${process.env.EVENTS_APP_API_VERSION}`;
-    const apiUrl = `https://eventsflw.herokuapp.com/v1/ticket-types/events/${eventId}`
-    return axios.get(apiUrl)
+  getEventTicketTypes(eventId) {
+    const apiUrl = `/ticket-types/events/${eventId}`;
+
+    return this.httpAxClient.get(apiUrl)
       .then((response) => {
         return response.data;
       })
       .catch((error) => {
-        return error;
+        throw new ApiServiceException(error);
       });
   }
 
   /**
    * @description Posts registration Info
    * @method
-   * @param {object}  
+   * @param {object, integer}  
    * @returns {array} 
    */
-  static postRegistrationDetails(data) {
-    // const apiUrl = `${process.env.EVENTS_APP_API_BASE_URL}${process.env.EVENTS_APP_API_VERSION}`;
-    const apiUrl = `https://eventsflw.herokuapp.com/v1/events/1/register`;
-    return axios.post(apiUrl, data)
+  postRegistrationDetails(data, eventId) {
+    const apiUrl = `/events/${eventId}/register`;
+
+    return this.httpAxClient.post(apiUrl, data)
       .then((response) => {
         return response.data;
       })
       .catch((error) => {
-        return error;
+        throw new ApiServiceException(error);
       });
   }
 
@@ -83,14 +115,30 @@ class EventsApi {
    * @param {object}  
    * @returns {array} 
    */
-  static createOrder(data){
-    const apiUrl = `https://eventsflw.herokuapp.com/v1/orders`;
-    return axios.post(apiUrl, data)
+  createOrder(data){
+    const apiUrl = `/orders`;
+
+    return this.httpAxClient.post(apiUrl, data)
       .then((response) => {
         return response.data;
       })
       .catch((error) => {
-        return error;
+        throw new ApiServiceException(error);
+      });
+  }
+
+  /**
+   * @description
+   * @param {integer} eventId 
+   * @returns {array}
+   */
+  getEventDetailArgs(eventId) {
+    return Promise.all([getEventDetail(eventId), getEventTicketTypes(eventId)])
+      .then((response) => {
+        return response.data
+      })
+      .catch((error) => {
+        throw new ApiServiceException(error);
       });
   }
 }

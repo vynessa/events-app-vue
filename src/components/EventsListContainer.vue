@@ -3,7 +3,7 @@
     <h1 class="events-header-text">
       {{text}}
     </h1>
-    <loader v-if="loading" :loading="loading"></loader>
+    <loader v-if="loading" class="event-list__loader"></loader>
     <div v-else class="events-list-wrapper">
       <div class="events-list"> 
         <div 
@@ -13,15 +13,15 @@
           :key="event.id">
           <img 
             class="events-list__img" 
-            :src="event.image">
-          <h6 class="events-list__date">{{displayParsedTime(event.start_time)}}</h6>
+            v-bind:src="getImage(event.image)">
+          <h6 class="events-list__date">{{displayParsedTime(event.start_time) || 'N/A'}}</h6>
           <h4 class="events-list__title">{{event.name}}</h4>
           <p class="events-list__price">{{getEventType(event.is_free, event.is_sold_out)}}</p>
         </div>
 
       </div>
       <div class="pagination-wrapper">
-        <loader v-if="loadMore" :loading="loadMore"></loader>
+        <loader v-if="loadMore" class="pagination__loader"></loader>
         <p v-if="noNewerEvents">You are up to date!</p>
         <button v-else class="btn-yellow pagination-btn" v-on:click="loadMoreEvents()">Load More Events</button>
       </div>
@@ -30,9 +30,10 @@
 </template>
 
 <script>
-import Loader from './loaders/Loader';
-import EventsApi from "../services/api"
+import Loader from '../components/loaders/Loader';
+import EventsApi from "../services/api";
 import { parseTime } from '../services/utils';
+import { constants } from 'zlib';
 
 export default {
    data () {
@@ -43,9 +44,12 @@ export default {
       currentPageNumber: 1,
       limit: 6,
       noNewerEvents: false,
-      // eventImg: require.context('../assets/anthony-unsplash'),
       loadMore: false,
-      notification: null
+      notification: null,
+      memoizedData: null,
+      fallBackImage: {
+        'background-image': `url(${require('../assets/anthony-unsplash.jpg')})`
+      }
     }
   },
   components: {
@@ -62,16 +66,28 @@ export default {
       }
 
       this.loading = true;
+      const apiService = new EventsApi();
 
-      EventsApi.getEvents(queryData).then((response) => {
-        this.eventsDataList = response.data.events
-        this.loading = false;
-      })
-      .catch(error => {
-        this.notification = {...error, type:'error'};
-        this.displayToast;
-      });
-    },
+      apiService.getEvents(queryData).then((response) => {
+          this.eventsDataList = response.data.events
+          this.loading = false;
+        })
+        .catch(error => {
+          this.notification = {...error, type:'error'};
+          this.displayToast;
+        })
+
+      // apiService.memoizedData(() => {
+      //   apiService.getEvents(queryData).then((response) => {
+      //     this.eventsDataList = response.data.events
+      //     this.loading = false;
+      //   })
+      //   .catch(error => {
+      //     this.notification = {...error, type:'error'};
+      //     this.displayToast;
+      //   })
+      // });
+    }
   },
   methods: {
     displayToast() {
@@ -82,10 +98,9 @@ export default {
         type: this.notification.type
       });
     },
-    // getImgUrl() {
-    //   var image = require.context('../assets/', false, /\.jpeg$/)
-    //   return image(this.eventImg + ".jpeg")
-    // },
+    getImage(eventImage){
+      return eventImage || this.fallBackImage
+    },
     displayEvent(id) {
       this.$router.push(`/events/${id}`)
     },
@@ -114,7 +129,9 @@ export default {
       };
       this.loadMore = true;
 
-      EventsApi.getEvents(queryData).then((response) => {        
+      const apiService = new EventsApi();
+
+      apiService.getEvents(queryData).then((response) => {        
         const newerEventsList = response.data.events
 
         if(newerEventsList.length === 0){
