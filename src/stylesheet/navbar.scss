@@ -1,0 +1,107 @@
+/** NAVBAR */
+
+.navbar {
+  width: 100%;
+  background-color: $background-white;
+  position: fixed;
+  z-index: 5;
+  border: none;
+  margin: 0;
+  padding: 1rem 0;
+}
+
+.navbar-inner {
+  display: flex;
+  padding: 0 2rem;
+  justify-content: space-between;
+
+  @include respond-to(tablet-and-mobile){
+    padding: 0 2rem;
+    display: revert;
+    justify-content: revert;
+  }
+}
+
+.navbar-header {
+  display: flex;
+  align-items: center;
+  
+  @include respond-to(tablet-and-mobile) {
+    justify-content: space-between;
+  }
+}
+
+#navbar-logo {
+  height: 25px;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+
+  @include respond-to(tablet-and-mobile) {
+    display: none;
+  }
+}
+
+.mobile__navbar-menu {
+  display: none;
+
+  // @include respond-to(medium-and-wide-screens) {
+  //   display: none !important;
+  // }
+} 
+
+.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: unset;
+  background-color: $background-white;
+  padding: 0 2rem;
+  height: 7rem;
+
+  // @include respond-to(medium-and-wide-screens) {
+  //   display: none !important;
+  // }
+}
+  
+
+.navbar-menu__list-item {
+  margin-right: 1rem;
+
+  @include respond-to(tablet-and-mobile) {
+    margin: 0;
+  }
+}
+
+.navbar-link {
+  @include links($text-transform: none)
+}
+
+.navbar-icon {
+  display: none;
+  
+  @include respond-to(tablet-and-mobile){
+    display: flex;
+    cursor: pointer;
+  }
+
+}
+
+.navbar-btn  {
+  @include buttons($bg-color: $brand-yellow, $text-color: $white);
+
+  @include hover{
+    background-color: $brand-hover-yellow;
+  };
+
+  @include respond-to(tablet-and-mobile){
+    width: unset
+  }
+
+  @include respond-to(smobile){
+    font-size: 11px;
+    padding: 10px 10px;
+  }
+}

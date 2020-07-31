@@ -1,0 +1,59 @@
+/** MODAL */
+
+.modal {
+  display: flex;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+
+  @include respond-to(handhelds){
+    padding: 0 1rem;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.modal-content {
+  background-color: $white;
+  margin: auto;
+  padding: 2rem;
+  border: 1px solid $black-02;
+  width: 25%;
+  border-radius: 10px;
+
+  @include respond-to(handhelds){
+    width: 100%;
+  }
+
+  @include respond-to(medium-and-wide-screens ){
+    width: 35%;
+  }
+
+  @include respond-to(tablets){
+    width: unset;
+  }
+}
+
+.modal-btn {
+  margin-top: 2rem;
+}
+
+.close {
+  color: $black-03;
+  float: right;
+}
+
+.close:hover,
+.close:focus {
+  color: $black-modal;
+  text-decoration: none;
+  cursor: pointer;
+}

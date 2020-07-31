@@ -1,0 +1,150 @@
+/** PAYMENT PAGE */
+
+.event-payment-wrapper {
+  display: flex;
+  height: 100vh;
+
+  @include respond-to(tablet-and-mobile){
+    flex-direction: column;
+  }
+}
+
+.event-payment-page {
+  width: 70%;
+  padding: 2rem 4rem;
+
+  @include respond-to(tablet-and-mobile){
+    width: unset;
+    padding: 2rem 2rem;
+  }
+
+  @include respond-to(tablets){
+    padding: 2rem 4rem;
+  }
+
+  .btn-close,
+  header {
+    margin: 0 0 3rem 0;
+  }
+}
+
+.btn-close {
+  @include buttons(
+    $border-radius: 60px,
+    $bg-color: $white,
+    $text-color: $black,
+    $width: reset
+  );
+}
+
+.event-ticket__category {
+  padding: 0.5rem 0;
+}
+
+.event-ticket__category, 
+.event-cart__btn {
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-ticket-type__name {
+  @include paragraph (
+  $font-size: 1.5rem, 
+  $font-weight: 500,
+  $text-transform: none
+  )
+}
+
+.event-ticket-type__price {
+  @include paragraph (
+  $font-size: 1.5rem, 
+  $font-weight: 700,
+  $text-transform: none
+ )
+}
+
+.event-ticket-type__name,
+.event-ticket-type__price {
+  width: 100%;
+}
+
+.event-cart__btn {
+  width: 30%;
+
+  @include respond-to(smobile){
+    width: 45%;
+  }
+}
+
+.cart-horizontal-line,
+.order-summary__horizontal-line {
+  @include horizontal-line(
+    $line-border: 1px solid #BDBDBD
+  )
+}
+
+/**
+* ORDER SUMMARY
+*
+*/
+
+.order-summary {
+  width: 30%;
+  background-color: $white;
+  padding: 2rem;
+
+  @include respond-to(tablet-and-mobile){
+    width: unset;
+  }
+
+  @include respond-to(tablets){
+    padding: 2rem 4rem;
+  }
+}
+
+.order-registeration {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.order-summary__selected-item,
+.order-summary__subtotal,
+.order-summary__vat,
+.order-summary__total
+ {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.order-summary__payment-section {
+  margin: 4rem 0 0 0;
+  height: 180px;
+}
+
+.order-summary__list {
+  height: 100px;
+}
+
+.order-summary__payment-section,
+.order-summary__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  
+}
+
+.order-summary__continue-btn {
+  margin-bottom: 0.8rem;
+}
+
+.order-summary__footer {
+  display: flex;
+  margin: 1rem 0 0 0;
+}
+
+.order-summary__footer__icon {
+  margin-right: 5px;
+}

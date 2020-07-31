@@ -1,0 +1,36 @@
+/** FOOTER */
+
+.footer {
+  display: flex;
+  padding: 4rem 7rem;
+  justify-content: space-between;
+
+  @include respond-to(tablet-and-mobile) {
+    padding: 2rem 0.5rem;
+    flex-direction: column;
+    text-align: center
+  }
+}
+
+.footer-left{
+  @include respond-to(tablet-and-mobile){
+    margin-bottom: 0.5rem;
+  }
+}
+
+.footer-right {
+  display: flex;
+
+  @include respond-to(tablet-and-mobile){
+    display: unset;
+  }
+
+  a {
+    position: relative;
+    margin-left: 1rem;
+  }
+}
+
+.footer-text {
+  color: $black-04;
+}

@@ -1,0 +1,83 @@
+@import 'normalize';
+@import '../../node_modules/@braid/vue-formulate/themes/snow/snow.scss';
+@import 'base';
+@import 'navbar';
+@import 'main-content';
+@import 'checkmark';
+@import 'modals';
+@import 'cards';
+@import 'events';
+@import 'event-detail';
+@import 'payment-page';
+@import 'payment-success';
+@import 'form';
+@import 'no-ticket';
+@import 'not-found';
+@import 'loader';
+@import 'footer';
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: $background-white;
+}
+
+body {
+  display:flex; 
+  flex-direction:column; 
+}
+
+h1, h2 {
+  font-weight: normal;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.btn-yellow {
+  @include buttons($bg-color: $brand-yellow, $text-color: $white);
+
+  @include hover{
+    background-color: $brand-hover-yellow;
+  };
+}
+
+.header-text-caps {
+  @include header-texts(
+    $text-color: $black,
+    $font-weight: bold
+  );
+  
+  @include respond-to(tablet-and-mobile){
+    text-align: center;
+    margin: 0;
+  }
+}
+
+.header-text-normal {
+  text-align: center;
+
+  @include header-texts(
+    $text-color: $black,
+    $font-weight: bold,
+    $text-transform: none,
+    $font-size: 0.8rem
+  );
+
+  @include respond-to(tablet-and-mobile){
+    margin: 0;
+  }
+}

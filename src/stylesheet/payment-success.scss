@@ -1,0 +1,25 @@
+/** PAYMENT SUCCESS */
+
+.payment-success-container,
+.payment-success-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.payment-success-wrapper {
+  height: 18rem;
+  justify-content: space-between;
+
+  p {
+    text-align: center;
+  }
+}
+
+.email-link {
+  @include links(
+    $text-color: #2D9CDB,
+    $text-transform: none,
+    $letter-spacing: 0
+  )
+}

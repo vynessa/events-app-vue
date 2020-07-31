@@ -1,0 +1,45 @@
+/** CHECKMARK */
+
+.checkmark-circle {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: $white;
+  border: 3px solid $brand-yellow;
+  border-top: 3px solid $white;
+  transform: rotate(45deg);
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: $white;
+  border: 3px solid $brand-yellow;
+  border-top: 3px solid $white;
+  transform: rotate(45deg);
+  animation: circlespin 1s linear;
+}
+
+.checkmark {
+   display: flex;
+  height: 68px;
+  width: 27px;
+  border-bottom: 3px solid $brand-yellow;
+  border-right: 3px solid $brand-yellow;
+  position: relative;
+  top: -13px;
+  bottom: 0;
+  left: 20px;
+  transform: rotate(360deg);
+  animation: loadingspin 1s linear;
+}
+
+@keyframes loadingspin {
+	100% {
+			transform: rotate(180deg)
+	}
+}
+
+@keyframes circlespin {
+	100% {
+			transform: rotate(369deg)
+	}
+}

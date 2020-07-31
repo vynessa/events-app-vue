@@ -1,0 +1,21 @@
+/** MAIN CONTENT */
+
+.main-content {
+  padding-top: 10rem;
+
+  @include respond-to(tablet-and-mobile) {
+    padding-top: 7rem;
+  }
+}
+
+/* MAIN PAGE */
+.outer-container {
+  position: relative;
+  padding: 0 2rem;
+}
+
+.inner-container {
+  margin: 0 auto;
+  max-width: 1240px;
+  width: 100%;
+}

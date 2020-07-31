@@ -1,0 +1,15 @@
+/** CARDS */
+
+.card {
+  background-color: $white;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.cardWrapper{
+  width: 32%;
+
+  @include respond-to(tablet-and-mobile){
+    width: unset;
+  }
+}

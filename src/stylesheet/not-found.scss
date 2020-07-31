@@ -1,0 +1,23 @@
+/** NOT FOUND */
+
+.not-found-wrapper {
+  display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 200px;
+}
+
+.no-found-text {
+	text-align: center;
+	font-size: 3rem;
+	color: $black-05;
+}
+
+.btn-back {
+	width: 20% !important;
+
+	@include respond-to(handhelds) {
+		width: 100% !important;
+	}
+}
