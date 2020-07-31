@@ -1,25 +1,31 @@
 <template>
   <div>
     <loader v-if="loading" class="payment__loader"></loader>
-    <div v-else class="event-payment-wrapper">
-      <cart 
-        @add-click="updateCart"
-        @remove-click="removefromCart"
-        :event="event"
-        :eventTicketTypes="eventTicketTypes"
-        :cartItems="cartItems"
-      >
-      </cart>
+    <fragment v-else>
+        <empty-state 
+          v-if="eventTicketTypes.length === 0" 
+          :pageHeaderText="pageHeaderText">
+        </empty-state>
+        <div v-else class="event-payment-wrapper">
+          <cart 
+            @add-click="updateCart"
+            @remove-click="removefromCart"
+            :event="event"
+            :eventTicketTypes="eventTicketTypes"
+            :cartItems="cartItems"
+          >
+          </cart>
 
-      <order-summary 
-        :event="event"
-        :cartItems="cartItems"
-        :subtotal="subtotal"
-        :vat="vat"
-        :total="total"
-      >
-      </order-summary>
-    </div>
+          <order-summary 
+            :event="event"
+            :cartItems="cartItems"
+            :subtotal="subtotal"
+            :vat="vat"
+            :total="total"
+          >
+          </order-summary>
+        </div>
+    </fragment>
   </div>
 </template>
 
@@ -28,6 +34,8 @@ import Loader from '../components/loaders/Loader';
 import Cart from "./Cart";
 import OrderSummary from "./OrderSummary";
 import EventsApi from "../services/api.js";
+import EmptyState from '../components/alerts/EmptyState';
+import { Fragment } from "vue-fragment";
 
 export default {
   data () {
@@ -51,7 +59,14 @@ export default {
   components: {
     Cart,
     OrderSummary,
-    Loader
+    Loader,
+    Fragment,
+    EmptyState
+  },
+  computed : {
+    pageHeaderText() {
+      return "No event ticket found"
+    }
   },
   methods: {
     getCartItems(){

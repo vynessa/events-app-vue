@@ -19,7 +19,7 @@
         <checkmark></checkmark>
         <p>Your tickets have been confirmed and
             sent to your email address at
-            <span class="email-link">ted@flutterwave.com</span>
+            <span class="email-link">{{value}}</span>
         </p>
         <button v-on:click="onBuyMore()" class="btn-yellow">Buy more tickets</button>
       </div>

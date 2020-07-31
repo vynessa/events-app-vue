@@ -5,7 +5,7 @@ import EventDetailPage from './pages/EventDetailPage';
 import PaymentPage from './pages/PaymentPage';
 import PaymentSuccessfulPage from './pages/PaymentSuccessfulPage';
 import NoTicketPage from './pages/NoTicketPage';
-import NotFound from './pages/NotFound';
+import NotFoundPage from './pages/NotFoundPage';
 
 Vue.use(Router);
 
@@ -41,6 +41,8 @@ export default new Router({
     {
       path: '*',
       name: 'notfound',
+      component: NotFoundPage,
+      props: { pageHeaderText: "Page Not Found" }
     }
   ]
 });

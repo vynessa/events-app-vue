@@ -12,6 +12,7 @@
 @import 'payment-success';
 @import 'form';
 @import 'no-ticket';
+@import 'not-found';
 @import 'loader';
 @import 'footer';
 
@@ -67,6 +68,8 @@ li {
 }
 
 .header-text-normal {
+  text-align: center;
+
   @include header-texts(
     $text-color: $black,
     $font-weight: bold,
@@ -75,7 +78,6 @@ li {
   );
 
   @include respond-to(tablet-and-mobile){
-    text-align: center;
     margin: 0;
   }
 }

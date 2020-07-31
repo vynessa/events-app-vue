@@ -22,51 +22,57 @@
       </div>
     </modal>
 
-    <main-container>  
-      <loader v-if="loading"></loader>
-      <div v-else class="event-detail">
-        <div class="event-detail__info">
-          <div class="event-detail__info-main">
-            <h6 class="event-detail__info-header">{{displayParsedDate(event.start_time) || 'N/A'}}</h6>
-            <h4 class="event-detail__info-title">{{event.name}}</h4>
-            <em class="event-detail__info-description">{{event.description}}</em>
-            <p class="event-detail__info-price">N5,000 - N1,000,000</p>
-            <button v-on:click="handleBtnClick(event.is_free)" class="event-detail__register-btn btn-yellow">{{event.is_free ? "Register for free": "Buy Tickets"}}</button>
-          </div>
+      <main-container>  
+        <loader v-if="loading"></loader>
+        <fragment v-else>
+          <empty-state 
+            v-if="Object.keys(event).length === 0" 
+            :pageHeaderText="pageHeaderText">
+          </empty-state>
+          <div v-else class="event-detail">
+            <div class="event-detail__info">
+              <div class="event-detail__info-main">
+                <h6 class="event-detail__info-header">{{displayParsedDate(event.start_time) || 'N/A'}}</h6>
+                <h4 class="event-detail__info-title">{{event.name}}</h4>
+                <em class="event-detail__info-description">{{event.description}}</em>
+                <p class="event-detail__info-price">N5,000 - N1,000,000</p>
+                <button v-on:click="handleBtnClick(event.is_free)" class="event-detail__register-btn btn-yellow">{{event.is_free ? "Register for free": "Buy Tickets"}}</button>
+              </div>
 
-          <div class="event-detail__info-main">
-            <img class="event-detail__info-img" :src="event.image || fallBackImage">
-          </div>
-        </div>
+              <div class="event-detail__info-main">
+                <img class="event-detail__info-img" :src="event.image || fallBackImage">
+              </div>
+            </div>
 
-        <hr class="horizontal-line">
+            <hr class="horizontal-line">
 
-        <div class="event-detail__info">
-          <div class="event-detail__info-extra">
-            <h6 class="event-detail__info-header event-detail__venue">Venue</h6>
-            <h4 class="event-detail__info-text">{{event.venue}}</h4>
+            <div class="event-detail__info">
+              <div class="event-detail__info-extra">
+                <h6 class="event-detail__info-header event-detail__venue">Venue</h6>
+                <h4 class="event-detail__info-text">{{event.venue}}</h4>
 
-            <div class="event-detail__directions event-detail__directions">
-              <font-awesome-icon :icon="['far', 'map']" size="1x" :style="{ color: '#F5A623' }" />
-              <a href="" class="event-detail__directions-links">
-                View map for directions
-              </a>
+                <div class="event-detail__directions event-detail__directions">
+                  <font-awesome-icon :icon="['far', 'map']" size="1x" :style="{ color: '#F5A623' }" />
+                  <a href="" class="event-detail__directions-links">
+                    View map for directions
+                  </a>
+                </div>
+              </div>
+              <div class="event-detail__info-extra">
+                <h6 class="event-detail__info-header event-detail__date">Date and time</h6>
+                <h4 class="event-detail__info-text">{{displayParsedDateTime(event.start_time) || 'N/A'}}</h4>
+
+                <h6 class="event-detail__info-header event-detail__social">Social links</h6>
+                <div 
+                  class="event-detail__social-links" 
+                  v-if="event.social_links && typeof event.social_links === 'object' && event.social_links.length > 0"> 
+                  <p v-for="socialLink in event.social_links" :key="socialLink.id" class="navbar-links">{{socialLink}}</p>
+                </div> 
+                <p class="event-detail__info-text" v-else>N/A</p>
+              </div>
             </div>
           </div>
-          <div class="event-detail__info-extra">
-            <h6 class="event-detail__info-header event-detail__date">Date and time</h6>
-            <h4 class="event-detail__info-text">{{displayParsedDateTime(event.start_time) || 'N/A'}}</h4>
-
-            <h6 class="event-detail__info-header event-detail__social">Social links</h6>
-            <div 
-              class="event-detail__social-links" 
-              v-if="typeof event.social_links === 'object' && event.social_links.length > 0"> 
-              <p v-for="socialLink in event.social_links" :key="socialLink.id" class="navbar-links">{{socialLink}}</p>
-            </div> 
-            <p class="event-detail__info-text" v-else>N/A</p>
-          </div>
-        </div>
-      </div>
+        </fragment>
     </main-container>  
   </div>
 </template>
@@ -77,6 +83,8 @@ import EventsApi from '../services/api';
 import Modal from './modals/Modal';
 import Checkmark from './alerts/Checkmark';
 import Loader from '../components/loaders/Loader';
+import EmptyState from '../components/alerts/EmptyState';
+import { Fragment } from 'vue-fragment';
 import { parseTime, parseDateTime, displayToast } from '../services/utils';
 
 export default {
@@ -132,7 +140,9 @@ export default {
         this.onDisplayToast();
       });
     },
-    
+    pageHeaderText() {
+      return "Event does not exist";
+    }
   },
   methods: {
     onDisplayToast() {
@@ -179,7 +189,9 @@ export default {
     MainContainer,
     Modal,
     Loader,
-    Checkmark
+    Checkmark,
+    Fragment,
+    EmptyState
   }
 }
 </script>
