@@ -26,7 +26,7 @@
     "express": "^4.17.1",
     "file-loader": "^1.1.4",
     "html-webpack-plugin": "^3.2.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "node-sass": "^4.5.3",
     "number-formatter": "^1.2.0",
     "style-loader": "^1.2.1",
