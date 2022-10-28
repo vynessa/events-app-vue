@@ -10,6 +10,6 @@
 
   },
   "scripts": {
-    "postdeploy": "CONFIG_VARS=$(echo $(heroku config -a events-app-vuejs --json)) && curl -n -X PATCH https://api.heroku.com/pipelines/c9820d71-fae3-47c2-9d87-c13543b37b95/stage/review/config-vars -d '$CONFIG_VARS' -H 'Content-Type: application/json' -H 'Accept: application/vnd.heroku+json; version=3' -H ‘Authorization: Bearer 5492ab9c-d7d4-47f0-a9cb-3b9963a5350e’"
+    "postdeploy": "CONFIG_VARS=$(echo $(heroku config -a events-app-vuejs --json)) && curl -n -X PATCH https://api.heroku.com/pipelines/c9820d71-fae3-47c2-9d87-c13543b37b95/stage/review/config-vars -d \"$CONFIG_VARS\" -H \"Content-Type: application/json\" -H \"Accept: application/vnd.heroku+json; version=3\""
   }
 }
