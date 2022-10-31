@@ -1,0 +1,12 @@
+{
+  "name": "Events App",
+  "description": "Listinng app for events to buy or register for an event",
+  "keywords": [
+    "events",
+    "HTML5",
+    "VueJS"
+  ],
+  "env": {
+
+  }
+}
